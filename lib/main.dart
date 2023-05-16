@@ -1,4 +1,5 @@
 import 'package:estacao_pilhas/pages/page_ex.dart';
+import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Estação Pilhas',
       theme: ThemeData(
+          primaryColor: const Color.fromRGBO(3, 140, 62, 1),
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: const Color.fromRGBO(3, 140, 62, 1),
             onPrimary: const Color.fromRGBO(255, 255, 255, 1),
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
             titleSmall: TextStyle(fontFamily: 'Inter'),
           ),
           fontFamily: 'Roboto'),
-      home: const ExPage(),
+      home: const RecyclerPage(),
     );
   }
 }
