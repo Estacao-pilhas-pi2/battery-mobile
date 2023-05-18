@@ -1,4 +1,3 @@
-import 'package:estacao_pilhas/pages/page_ex.dart';
 import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:flutter/material.dart';
 
