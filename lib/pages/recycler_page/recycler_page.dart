@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../qr_code_reader/qr_code_reader.dart';
 import 'components/location_error_dialog.dart';
 import 'controllers/recycler_page_controller.dart';
 
@@ -210,7 +209,20 @@ class _RecyclerPageState extends State<RecyclerPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 25),
                     child: ElevatedButton(
-                      onPressed: () => log("Ler QR Code"),
+                      onPressed: () =>
+                          Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => QrCodeReader(
+                          displayText:
+                              "Leia o Código QR localizado na parte X da máquina",
+                          onRead: (capture) {
+                            if (capture['id'] != null) {
+                              debugPrint('Valor lido: $capture');
+                            } else {
+                              debugPrint('Valor errado');
+                            }
+                          },
+                        ),
+                      )),
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(216, 58),
                         shape: RoundedRectangleBorder(
