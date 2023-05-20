@@ -6,9 +6,11 @@ class Endereco {
   int numero;
   String complemento;
   String descricao;
+  double latitude;
+  double longitude;
 
   Endereco(this.cep, this.bairro, this.cidade, this.estado, this.numero,
-      this.complemento, this.descricao);
+      this.complemento, this.descricao, this.latitude, this.longitude);
 
   @override
   String toString() {

@@ -1,10 +1,6 @@
 import 'dart:developer';
 
 import 'package:estacao_pilhas/globals/colors.dart';
-import 'package:estacao_pilhas/models/endereco.dart';
-import 'package:estacao_pilhas/models/maquina.dart';
-import 'package:estacao_pilhas/models/pilha.dart';
-import 'package:estacao_pilhas/pages/recycler_page/components/station_info_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -12,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'components/location_error_dialog.dart';
+import 'controllers/recycler_page_controller.dart';
 
 class RecyclerPage extends StatefulWidget {
   const RecyclerPage({super.key});
@@ -41,7 +38,6 @@ class _RecyclerPageState extends State<RecyclerPage> {
     super.initState();
 
     initialRequest();
-    getUserPosition();
   }
 
   @override
@@ -51,7 +47,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
     }
   }
 
-  Future<void> getUserPosition() async {
+  Future<Position> getUserPosition() async {
     try {
       bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -71,58 +67,33 @@ class _RecyclerPageState extends State<RecyclerPage> {
         throw ("Acesse as configurações para habilitar a localização!");
       }
 
-      userLocation = await Geolocator.getCurrentPosition();
+      return Geolocator.getCurrentPosition();
     } catch (error) {
-      _showLocationErrorDialog(error.toString());
+      await _showLocationErrorDialog(error.toString());
+      return Position(
+          longitude: -47.9292,
+          latitude: -15.7801,
+          timestamp: DateTime.now(),
+          accuracy: 0,
+          altitude: 0,
+          heading: 0,
+          speed: 0,
+          speedAccuracy: 0);
     }
+  }
+
+  Future<void> initialRequest() async {
+    List<Marker> requestedMarkerList =
+        await RecyclerPageController().getStations();
+    Position requestedPosition = await getUserPosition();
 
     setState(() {
+      markerList = requestedMarkerList;
+      userLocation = requestedPosition;
+      username = "Usuário";
+      credits = 20;
       isScreenLoading = false;
     });
-  }
-
-  // TODO: Função que chama os requests do backend
-  Future<void> initialRequest() async {
-    markerList = [
-      Marker(
-        point: LatLng(-15.807646, -47.878698),
-        width: 60,
-        height: 60,
-        builder: (context) => IconButton(
-            onPressed: () => _showStationInfoDialog(Maquina(
-                "descricao",
-                1,
-                [
-                  Pilha("9V", 5),
-                  Pilha("AAA", 5),
-                  Pilha("AA", 5),
-                  Pilha("C", 5),
-                  Pilha("D", 5)
-                ],
-                [
-                  Pilha("9V", 5),
-                  Pilha("AAA", 5),
-                  Pilha("AA", 5),
-                  Pilha("C", 5),
-                  Pilha("D", 5)
-                ],
-                Endereco("cep", "bairro", "cidade", "estado", 5, "complemento",
-                    "descricao"))),
-            icon: const Icon(Icons.location_on)),
-      ),
-    ];
-    username = "Usuário";
-    credits = 20;
-  }
-
-  Future<void> _showStationInfoDialog(Maquina station) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return StationInfoDialog(station);
-      },
-    );
   }
 
   Future<void> _showLocationErrorDialog(String error) async {
@@ -175,7 +146,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                               Text(
                                 "Créditos disponíveis",
                                 style: TextStyle(
-                                    color: AppColors.onPrimary,
+                                    color: StaticColors.onPrimary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
@@ -183,7 +154,8 @@ class _RecyclerPageState extends State<RecyclerPage> {
                               Text(
                                 "$credits Créditos",
                                 style: TextStyle(
-                                    color: AppColors.onPrimary, fontSize: 18),
+                                    color: StaticColors.onPrimary,
+                                    fontSize: 18),
                               )
                             ]),
                       ),
@@ -210,14 +182,17 @@ class _RecyclerPageState extends State<RecyclerPage> {
                                       Radius.circular(12))),
                               child: IconButton(
                                   onPressed: () async {
-                                    await getUserPosition();
+                                    Position requestedPosition =
+                                        await getUserPosition();
+                                    setState(
+                                        () => userLocation = requestedPosition);
                                     _mapController.move(
                                         LatLng(userLocation.latitude,
                                             userLocation.longitude),
                                         16);
                                   },
                                   icon: const Icon(Icons.my_location),
-                                  color: AppColors.onPrimary),
+                                  color: StaticColors.onPrimary),
                             ),
                           ),
                         )
@@ -227,8 +202,8 @@ class _RecyclerPageState extends State<RecyclerPage> {
                           urlTemplate:
                               'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                         ),
-                        MarkerLayer(markers: markerList),
                         CurrentLocationLayer(),
+                        MarkerLayer(markers: markerList),
                       ],
                     ),
                   ),
