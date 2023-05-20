@@ -11,6 +11,8 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'components/location_error_dialog.dart';
+
 class RecyclerPage extends StatefulWidget {
   const RecyclerPage({super.key});
 
@@ -54,8 +56,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
       bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
 
       if (!isLocationEnabled) {
-        throw Future.error(
-            "Para o correto funcionamento do aplicativo é necessário que sua localização esteja habilitada!");
+        throw ("Para o correto funcionamento do aplicativo é necessário que sua localização esteja habilitada!");
       }
 
       LocationPermission locationPermission =
@@ -63,18 +64,16 @@ class _RecyclerPageState extends State<RecyclerPage> {
       if (locationPermission == LocationPermission.denied) {
         locationPermission = await Geolocator.requestPermission();
         if (locationPermission == LocationPermission.denied) {
-          throw Future.error(
-              "Para o correto funcionamento do aplicativo é necessário que sua localização esteja habilitada!");
+          throw ("Para o correto funcionamento do aplicativo é necessário que sua localização esteja habilitada!");
         }
       }
       if (locationPermission == LocationPermission.deniedForever) {
-        throw Future.error(
-            "Acesse as configurações para habilitar a localização!");
+        throw ("Acesse as configurações para habilitar a localização!");
       }
 
       userLocation = await Geolocator.getCurrentPosition();
-    } catch (e) {
-      log(e.toString());
+    } catch (error) {
+      _showLocationErrorDialog(error.toString());
     }
 
     setState(() {
@@ -86,17 +85,11 @@ class _RecyclerPageState extends State<RecyclerPage> {
   Future<void> initialRequest() async {
     markerList = [
       Marker(
-        point: LatLng(userLocation.latitude, userLocation.latitude),
-        width: 60,
-        height: 60,
-        builder: (context) => const Icon(Icons.person_pin_circle),
-      ),
-      Marker(
         point: LatLng(-15.807646, -47.878698),
         width: 60,
         height: 60,
         builder: (context) => IconButton(
-            onPressed: () => _showDialog(Maquina(
+            onPressed: () => _showStationInfoDialog(Maquina(
                 "descricao",
                 1,
                 [
@@ -122,12 +115,22 @@ class _RecyclerPageState extends State<RecyclerPage> {
     credits = 20;
   }
 
-  Future<void> _showDialog(Maquina station) async {
+  Future<void> _showStationInfoDialog(Maquina station) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return StationInfoDialog(station);
+      },
+    );
+  }
+
+  Future<void> _showLocationErrorDialog(String error) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return LocationErrorDialog(error);
       },
     );
   }
@@ -144,7 +147,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
         body: isScreenLoading
             ? const Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListView(children: [
                   Center(
                     child: Padding(
