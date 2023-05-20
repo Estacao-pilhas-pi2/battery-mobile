@@ -1,4 +1,4 @@
-import 'package:estacao_pilhas/pages/page_ex.dart';
+import 'package:estacao_pilhas/pages/qr_code_reader/qr_code_reader.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -27,7 +27,16 @@ class MyApp extends StatelessWidget {
             titleSmall: TextStyle(fontFamily: 'Inter'),
           ),
           fontFamily: 'Roboto'),
-      home: const ExPage(),
+      home: QrCodeReader(
+        displayText: "Leia o Código QR localizado na parte X da máquina",
+        onRead: (capture) {
+          if (capture['id'] != null) {
+            debugPrint('Valor lido: $capture');
+          } else {
+            debugPrint('Valor errado');
+          }
+        },
+      ),
     );
   }
 }
