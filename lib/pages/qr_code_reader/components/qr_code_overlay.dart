@@ -51,11 +51,11 @@ class QRScannerOverlay extends StatelessWidget {
         ),
       ),
       Padding(
-        padding: EdgeInsets.only(top: 150),
+        padding: const EdgeInsets.only(top: 150),
         child: Text(
           textAlign: TextAlign.center,
           displayText,
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: const TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
       Column(
@@ -65,16 +65,16 @@ class QRScannerOverlay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: 80),
+                padding: const EdgeInsets.only(bottom: 80),
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
+                  backgroundColor: Theme.of(context).primaryColor,
                   child: const Icon(
                     Icons.close,
                     color: Colors.white,
                   ),
-                  backgroundColor: Theme.of(context).primaryColor,
                 ),
               ),
             ],
