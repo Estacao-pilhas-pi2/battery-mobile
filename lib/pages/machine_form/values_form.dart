@@ -47,11 +47,11 @@ class _ValuesFormState extends State<ValuesForm> {
 
   void initialData() {
     if (widget.maquina != null) {
-      _9v = widget.maquina!.precos[0].creditos;
-      _AAA = widget.maquina!.precos[1].creditos;
-      _AA = widget.maquina!.precos[2].creditos;
-      _C = widget.maquina!.precos[3].creditos;
-      _D = widget.maquina!.precos[4].creditos;
+      _9v = widget.maquina?.precos[0].creditos;
+      _AAA = widget.maquina?.precos[1].creditos;
+      _AA = widget.maquina?.precos[2].creditos;
+      _C = widget.maquina?.precos[3].creditos;
+      _D = widget.maquina?.precos[4].creditos;
     }
   }
 
@@ -69,7 +69,7 @@ class _ValuesFormState extends State<ValuesForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue:
-                      widget.maquina!.precos[0].creditos.toString() ?? "",
+                      widget.maquina?.precos[0].creditos.toString() ?? "",
                   label: "Créditos por pilha 9V",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -80,7 +80,7 @@ class _ValuesFormState extends State<ValuesForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue:
-                      widget.maquina!.precos[1].creditos.toString() ?? "",
+                      widget.maquina?.precos[1].creditos.toString() ?? "",
                   label: "Créditos por pilha AAA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -91,7 +91,7 @@ class _ValuesFormState extends State<ValuesForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue:
-                      widget.maquina!.precos[2].creditos.toString() ?? "",
+                      widget.maquina?.precos[2].creditos.toString() ?? "",
                   label: "Créditos por pilha AA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -102,7 +102,7 @@ class _ValuesFormState extends State<ValuesForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue:
-                      widget.maquina!.precos[3].creditos.toString() ?? "",
+                      widget.maquina?.precos[3].creditos.toString() ?? "",
                   label: "Créditos por pilha C",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -113,7 +113,7 @@ class _ValuesFormState extends State<ValuesForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue:
-                      widget.maquina!.precos[4].creditos.toString() ?? "",
+                      widget.maquina?.precos[4].creditos.toString() ?? "",
                   label: "Créditos por pilha D",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -147,7 +147,7 @@ class _ValuesFormState extends State<ValuesForm> {
     }
 
     debugPrint('cep : ${widget.cep}');
-    debugPrint('rua : ${widget.descricao}');
+    debugPrint('descricao : ${widget.descricao}');
     debugPrint('bairro : ${widget.bairro}');
     debugPrint('número : ${widget.numero}');
     debugPrint('complemento : ${widget.complemento}');

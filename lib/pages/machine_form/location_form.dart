@@ -37,13 +37,13 @@ class _LocationFormState extends State<LocationForm> {
 
   void initialData() async {
     if (widget.machine != null) {
-      _cep = widget.machine!.endereco.cep;
-      _bairro = widget.machine!.endereco.bairro;
-      _cidade = widget.machine!.endereco.cidade;
-      _estado = widget.machine!.endereco.estado;
-      _numero = widget.machine!.endereco.numero;
-      _complemento = widget.machine!.endereco.complemento;
-      _descricao = widget.machine!.endereco.descricao;
+      _cep = widget.machine?.endereco.cep;
+      _bairro = widget.machine?.endereco.bairro;
+      _cidade = widget.machine?.endereco.cidade;
+      _estado = widget.machine?.endereco.estado;
+      _numero = widget.machine?.endereco.numero;
+      _complemento = widget.machine?.endereco.complemento;
+      _descricao = widget.machine?.endereco.descricao;
     }
   }
 
@@ -60,7 +60,7 @@ class _LocationFormState extends State<LocationForm> {
               children: [
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.cep,
+                  initialValue: widget.machine?.endereco.cep ?? "",
                   label: "CEP",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -71,7 +71,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.bairro,
+                  initialValue: widget.machine?.endereco.bairro ?? "",
                   label: "Bairro",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -80,16 +80,17 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.descricao,
+                  initialValue: widget.machine?.endereco.descricao ?? "",
                   label: "Descriçao",
                   notEmpty: true,
                   onSave: (String? value) {
-                    _bairro = value;
+                    _descricao = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.numero.toString(),
+                  initialValue:
+                      widget.machine?.endereco.numero.toString() ?? "",
                   label: "Número",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -99,7 +100,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.complemento,
+                  initialValue: widget.machine?.endereco.complemento ?? "",
                   label: "Complemento",
                   onSave: (String? value) {
                     _complemento = value;
@@ -107,7 +108,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.cidade,
+                  initialValue: widget.machine?.endereco.cidade ?? "",
                   label: "Cidade",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -116,7 +117,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine!.endereco.estado,
+                  initialValue: widget.machine?.endereco.estado ?? "",
                   label: "Estado",
                   notEmpty: true,
                   onSave: (String? value) {
