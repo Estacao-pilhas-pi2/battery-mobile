@@ -10,7 +10,7 @@ class QrCodeReader extends StatefulWidget {
       : super(key: key);
 
   final String displayText;
-  final void Function(dynamic barcodes) onRead;
+  final void Function(dynamic barcodes, BuildContext context) onRead;
   @override
   State<QrCodeReader> createState() => _QrCodeReaderState();
 }
@@ -27,7 +27,7 @@ class _QrCodeReaderState extends State<QrCodeReader> {
             final barcodeRaw = barcode.rawValue;
             if (barcodeRaw != null) {
               final qrCodeObject = json.decode(barcodeRaw);
-              widget.onRead(qrCodeObject);
+              widget.onRead(qrCodeObject, context);
             }
           }
         },
