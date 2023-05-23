@@ -18,18 +18,18 @@ class RecyclerPageController {
           "Maquina 1",
           1,
           [
-            Pilha("9V", 1),
-            Pilha("AAA", 2),
-            Pilha("AA", 3),
-            Pilha("C", 4),
-            Pilha("D", 5)
+            const Pilha(nome: "9V", quantidade: 1),
+            const Pilha(nome: "AAA", quantidade: 2),
+            const Pilha(nome: "AA", quantidade: 3),
+            const Pilha(nome: "C", quantidade: 4),
+            const Pilha(nome: "D", quantidade: 5)
           ],
           [
-            Pilha("9V", 1),
-            Pilha("AAA", 2),
-            Pilha("AA", 3),
-            Pilha("C", 4),
-            Pilha("D", 5)
+            const Pilha(nome: "9V", creditos: 1),
+            const Pilha(nome: "AAA", creditos: 2),
+            const Pilha(nome: "AA", creditos: 3),
+            const Pilha(nome: "C", creditos: 4),
+            const Pilha(nome: "D", creditos: 5)
           ],
           Endereco("cep", "bairro", "cidade", "estado", 5, "complemento",
               "descricao", -15.8014, -47.8823)),
@@ -37,18 +37,18 @@ class RecyclerPageController {
           "descricao",
           2,
           [
-            Pilha("9V", 5),
-            Pilha("AAA", 4),
-            Pilha("AA", 3),
-            Pilha("C", 2),
-            Pilha("D", 1)
+            const Pilha(nome: "9V", creditos: 5),
+            const Pilha(nome: "AAA", creditos: 4),
+            const Pilha(nome: "AA", creditos: 3),
+            const Pilha(nome: "C", creditos: 2),
+            const Pilha(nome: "D", creditos: 1)
           ],
           [
-            Pilha("9V", 5),
-            Pilha("AAA", 4),
-            Pilha("AA", 3),
-            Pilha("C", 2),
-            Pilha("D", 1)
+            const Pilha(nome: "9V", creditos: 5),
+            const Pilha(nome: "AAA", creditos: 4),
+            const Pilha(nome: "AA", creditos: 3),
+            const Pilha(nome: "C", creditos: 2),
+            const Pilha(nome: "D", creditos: 1)
           ],
           Endereco("cep", "bairro", "cidade", "estado", 5, "complemento",
               "descricao", -15.7996, -47.8823))
