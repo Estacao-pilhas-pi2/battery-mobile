@@ -20,6 +20,15 @@ class AppColors {
         tertiary: const Color.fromRGBO(88, 122, 166, 1),
         onSecondary: const Color.fromRGBO(0, 0, 0, 1),
       ),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2,
+            color: Color.fromRGBO(3, 140, 62, 1),
+          ),
+        ),
+      ),
       textTheme: const TextTheme(
         titleMedium: TextStyle(fontFamily: 'Inter'),
         titleLarge: TextStyle(fontFamily: 'Inter'),
