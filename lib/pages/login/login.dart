@@ -32,7 +32,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.fromLTRB(60, 30, 60, 30),
-              child: Image.asset('assets/images/test_logo.png'),
+              child: Image.asset('assets/images/logo.png'),
             ),
             Container(
               alignment: Alignment.center,

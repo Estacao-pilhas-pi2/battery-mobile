@@ -42,7 +42,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               padding: const EdgeInsets.fromLTRB(60, 30, 60, 30),
               child: Column(
                 children: [
-                  Image.asset('assets/images/test_logo.png'),
+                  Image.asset('assets/images/logo.png'),
                 ],
               )),
           Container(
