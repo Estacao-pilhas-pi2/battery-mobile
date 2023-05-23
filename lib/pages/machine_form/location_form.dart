@@ -59,6 +59,11 @@ class _LocationFormState extends State<LocationForm> {
             child: Column(
               children: [
                 const SizedBox(height: 25),
+                RoundedButton(
+                  onPressed: () => log("localização"),
+                  text: "Pegar Localização atual",
+                ),
+                const SizedBox(height: 25),
                 CustomTextField(
                   initialValue: widget.machine?.endereco.cep ?? "",
                   label: "CEP",
