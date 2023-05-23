@@ -11,7 +11,7 @@ class LocationRegister extends StatefulWidget {
   final int machineId;
 
   @override
-  _LocationRegisterState createState() => _LocationRegisterState();
+  State<LocationRegister> createState() => _LocationRegisterState();
 }
 
 class _LocationRegisterState extends State<LocationRegister> {
@@ -35,7 +35,7 @@ class _LocationRegisterState extends State<LocationRegister> {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               children: [
-                const SizedBox(height: 10),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "CEP",
                   notEmpty: true,
@@ -45,7 +45,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                     _cep = value;
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Rua",
                   notEmpty: true,
@@ -53,7 +53,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                     _rua = value;
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Bairro",
                   notEmpty: true,
@@ -61,7 +61,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                     _bairro = value;
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Número",
                   notEmpty: true,
@@ -70,14 +70,14 @@ class _LocationRegisterState extends State<LocationRegister> {
                     _numero = int.parse(value);
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Complemento",
                   onSave: (String? value) {
                     _complemento = value;
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Cidade",
                   notEmpty: true,
@@ -85,7 +85,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                     _cidade = value;
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Estado",
                   notEmpty: true,
@@ -93,12 +93,12 @@ class _LocationRegisterState extends State<LocationRegister> {
                     _estado = value;
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 RoundedButton(
                   onPressed: submit,
                   text: "Próximo",
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
               ],
             ),
           ),

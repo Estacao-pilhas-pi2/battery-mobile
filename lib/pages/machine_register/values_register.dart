@@ -26,7 +26,7 @@ class ValuesRegister extends StatefulWidget {
   final String? estado;
 
   @override
-  _ValuesRegisterState createState() => _ValuesRegisterState();
+  State<ValuesRegister> createState() => _ValuesRegisterState();
 }
 
 class _ValuesRegisterState extends State<ValuesRegister> {
@@ -48,6 +48,7 @@ class _ValuesRegisterState extends State<ValuesRegister> {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               children: [
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Créditos por pilha 9V",
                   notEmpty: true,
@@ -56,7 +57,7 @@ class _ValuesRegisterState extends State<ValuesRegister> {
                     _9v = int.parse(value);
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Créditos por pilha AAA",
                   notEmpty: true,
@@ -65,7 +66,7 @@ class _ValuesRegisterState extends State<ValuesRegister> {
                     _AAA = int.parse(value);
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Créditos por pilha AA",
                   notEmpty: true,
@@ -74,7 +75,7 @@ class _ValuesRegisterState extends State<ValuesRegister> {
                     _AA = int.parse(value);
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Créditos por pilha C",
                   notEmpty: true,
@@ -83,7 +84,7 @@ class _ValuesRegisterState extends State<ValuesRegister> {
                     _C = int.parse(value);
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 CustomTextField(
                   label: "Créditos por pilha D",
                   notEmpty: true,
@@ -92,12 +93,12 @@ class _ValuesRegisterState extends State<ValuesRegister> {
                     _D = int.parse(value);
                   },
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 RoundedButton(
                   onPressed: submit,
                   text: "Registrar",
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
               ],
             ),
           ),

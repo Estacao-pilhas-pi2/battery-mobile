@@ -19,9 +19,7 @@ class BaseForm extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                   minHeight: size.height - appBar.preferredSize.height),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [children]),
+              child: Column(children: [children]),
             ),
           );
         },
