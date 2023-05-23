@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 
 class Register extends StatelessWidget {
   const Register({super.key});
@@ -42,7 +43,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               padding: const EdgeInsets.fromLTRB(60, 30, 60, 30),
               child: Column(
                 children: [
-                  Image.asset('assets/images/logo.png'),
+                  Image.asset('assets/images/logo_text.png'),
                 ],
               )),
           Container(
@@ -82,6 +83,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               validator: (text) {
                 if (text == null || text.isEmpty) {
                   return 'Campo não preenchido';
+                }
+                if (!CPFValidator.isValid(text)) {
+                  return 'CPF inválido';
                 }
                 return null;
               },
