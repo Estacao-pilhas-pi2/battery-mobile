@@ -1,7 +1,9 @@
 import 'package:estacao_pilhas/pages/machine_register/location_register.dart';
+import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:flutter/material.dart';
 
 import 'globals/colors.dart';
+import 'pages/credits_received/credits_received.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,6 +17,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Estação Pilhas',
         theme: AppColors.appTheme,
-        home: const LocationRegister(machineId: 5));
+        home: const CreditsReceived());
   }
 }
