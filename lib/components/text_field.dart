@@ -10,6 +10,7 @@ class CustomTextField extends StatefulWidget {
   final minLength;
   final format;
   final onSave;
+  final initialValue;
 
   const CustomTextField(
       {super.key,
@@ -21,7 +22,8 @@ class CustomTextField extends StatefulWidget {
       this.notEmpty = false,
       this.minLength,
       this.format,
-      this.onSave});
+      this.onSave,
+      this.initialValue});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -31,6 +33,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: widget.initialValue,
       keyboardType: widget.keyboardType,
       maxLength: widget.maxLength,
       inputFormatters: widget.inputFormatters,

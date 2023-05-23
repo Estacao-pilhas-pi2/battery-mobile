@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
 import 'package:estacao_pilhas/pages/manage_machine/controllers/manage_machine_page_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/rounded_button.dart';
 import '../../models/pilha.dart';
+import '../machine_form/values_form.dart';
 import 'components/battery_storage.dart';
 
 class ManageMachine extends StatefulWidget {
@@ -57,7 +59,11 @@ class _ManageMachineState extends State<ManageMachine> {
                 const SizedBox(height: 30),
                 RoundedButton(
                   text: "Editar Localização",
-                  onPressed: () => log("Editar"),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LocationForm(
+                            machineId: machine.idMaquina,
+                            machine: machine,
+                          ))),
                   fixedSize: const Size(165, 40),
                   padding: const EdgeInsets.symmetric(horizontal: 120),
                   backgroundColor: StaticColors.onPrimary,
@@ -65,7 +71,8 @@ class _ManageMachineState extends State<ManageMachine> {
                 const SizedBox(height: 30),
                 RoundedButton(
                   text: "Editar Créditos",
-                  onPressed: () => log("Editar"),
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ValuesForm(maquina: machine))),
                   fixedSize: const Size(165, 40),
                   padding: const EdgeInsets.symmetric(horizontal: 120),
                   backgroundColor: StaticColors.onPrimary,
@@ -74,7 +81,7 @@ class _ManageMachineState extends State<ManageMachine> {
                 RoundedButton(
                   text: "Esvaziar Máquina",
                   fixedSize: const Size(165, 40),
-                  onPressed: () => log("Editar"),
+                  onPressed: () => log("Esvaziar"),
                   padding: const EdgeInsets.symmetric(horizontal: 120),
                   backgroundColor: StaticColors.onPrimary,
                 ),
