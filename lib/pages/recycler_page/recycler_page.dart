@@ -5,6 +5,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../credits_received/credits_received.dart';
 import '../qr_code_reader/qr_code_reader.dart';
 import 'components/location_error_dialog.dart';
 import 'controllers/recycler_page_controller.dart';
@@ -217,6 +218,8 @@ class _RecyclerPageState extends State<RecyclerPage> {
                           onRead: (capture, context) {
                             if (capture['id'] != null) {
                               debugPrint('Valor lido: $capture');
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => CreditsReceived()));
                             } else {
                               debugPrint('Valor errado');
                             }
