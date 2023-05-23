@@ -1,3 +1,4 @@
+import 'package:estacao_pilhas/pages/register/register.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -29,13 +30,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         child: ListView(
           children: <Widget>[
             Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Image.asset('assets/images/Logo.png'),
-                  ],
-                )),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.fromLTRB(60, 30, 60, 30),
+              child: Image.asset('assets/images/logo_text.png'),
+            ),
             Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(10),
@@ -71,6 +69,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(216, 58),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
                   child: const Text('Login'),
                   onPressed: () {
                     // nameController.text
@@ -86,7 +89,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     'Cadastre-se aqui!',
                   ),
                   onPressed: () {
-                    //signup screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Register()),
+                    );
                   },
                 )
               ],
