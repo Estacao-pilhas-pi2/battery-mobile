@@ -214,7 +214,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                         builder: (context) => QrCodeReader(
                           displayText:
                               "Leia o Código QR localizado na parte X da máquina",
-                          onRead: (capture) {
+                          onRead: (capture, context) {
                             if (capture['id'] != null) {
                               debugPrint('Valor lido: $capture');
                             } else {
