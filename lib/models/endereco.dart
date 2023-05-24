@@ -48,6 +48,6 @@ class Endereco {
 
   @override
   String toString() {
-    return "$rua $complemento $numero";
+    return "$rua $bairro $complemento, $numero, $cidade-$estado\n$cep";
   }
 }

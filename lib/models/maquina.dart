@@ -78,4 +78,12 @@ class Maquina {
     jsonDecode.forEach((var item) => {maquinaList.add(Maquina.fromJson(item))});
     return maquinaList;
   }
+
+  int getCurrentBatteries() {
+    return quantidadeAAA! +
+        quantidadeAA! +
+        quantidadeC! +
+        quantidadeD! +
+        quantidadeV9!;
+  }
 }
