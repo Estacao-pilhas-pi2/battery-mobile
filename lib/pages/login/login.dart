@@ -2,7 +2,7 @@ import 'package:estacao_pilhas/models/usuario.dart';
 import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:estacao_pilhas/pages/register/register.dart';
 import 'package:flutter/material.dart';
-import '../../components/error_dialog.dart';
+import '../../components/simple_dialog.dart';
 import '../credits_received/credits_received.dart';
 import 'controllers/login_controller.dart';
 
@@ -51,7 +51,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return ErrorDialog(message: response);
+          return BasicDialog(title: 'Falha no login', message: response);
         },
       );
     }

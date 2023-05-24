@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ErrorDialog extends StatelessWidget {
+class BasicDialog extends StatelessWidget {
+  final String title;
   final String message;
-  const ErrorDialog({super.key, required this.message});
+  const BasicDialog({super.key, required this.title, required this.message});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12.0))),
-      title: const Center(child: Text('Falha no login')),
+      title: Center(child: Text(title)),
       content: Text(message),
       actions: [
         ElevatedButton(
