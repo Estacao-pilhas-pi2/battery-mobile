@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import '../globals/secure_storage.dart';
 import '../globals/utils.dart';
 import '../models/register_response.dart';
 import '../models/usuario.dart';
@@ -86,5 +87,12 @@ class UsuarioService {
         throw HttpException('$error');
       }
     }
+  }
+
+  Future<Usuario> getUserInfo() async {
+    SecureStorage secureStorage = SecureStorage();
+    var secureStorageUser = await secureStorage.read(Utils.userKey);
+
+    return Usuario.fromJson(jsonDecode(secureStorageUser));
   }
 }

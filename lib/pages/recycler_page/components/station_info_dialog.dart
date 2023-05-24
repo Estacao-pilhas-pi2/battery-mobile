@@ -50,20 +50,20 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                     ],
                   ),
                   for (int index = 0;
-                      index < widget.station.precos.length;
+                      index < widget.station.precos!.length;
                       index++)
                     TableRow(
                       children: <Widget>[
                         Text(
-                          widget.station.precos[index].nome,
+                          widget.station.precos![index].nome,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Center(
                             child: Text(
-                                "${widget.station.precos[index].creditos}")),
+                                "${widget.station.precos![index].creditos}")),
                         Center(
                             child: Text(
-                                "${widget.station.qtdPilhas[index].creditos}/100")),
+                                "${widget.station.qtdPilhas![index].creditos}/100")),
                       ],
                     ),
                 ],

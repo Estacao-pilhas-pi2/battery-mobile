@@ -5,6 +5,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../models/usuario.dart';
 import '../credits_received/credits_received.dart';
 import '../qr_code_reader/qr_code_reader.dart';
 import 'components/location_error_dialog.dart';
@@ -18,8 +19,7 @@ class RecyclerPage extends StatefulWidget {
 }
 
 class _RecyclerPageState extends State<RecyclerPage> {
-  late String username = "";
-  late int credits = 5;
+  late Usuario usuario = Usuario();
   final MapController _mapController = MapController();
   List<Marker> markerList = [];
   late Position userLocation = Position(
@@ -86,12 +86,12 @@ class _RecyclerPageState extends State<RecyclerPage> {
     List<Marker> requestedMarkerList =
         await RecyclerPageController().getStations();
     Position requestedPosition = await getUserPosition();
+    Usuario requestedUser = await RecyclerPageController().getUserInfo();
 
     setState(() {
       markerList = requestedMarkerList;
       userLocation = requestedPosition;
-      username = "Usuário";
-      credits = 20;
+      usuario = requestedUser;
       isScreenLoading = false;
     });
   }
@@ -124,7 +124,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 28),
                       child: Text(
-                        "Bem vindo(a) $username",
+                        "Bem vindo(a) ${usuario.nome}",
                         style: const TextStyle(fontSize: 20),
                       ),
                     ),
@@ -152,7 +152,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                               ),
                               const Spacer(),
                               Text(
-                                "$credits Créditos",
+                                "5 Créditos",
                                 style: TextStyle(
                                     color: StaticColors.onPrimary,
                                     fontSize: 18),
