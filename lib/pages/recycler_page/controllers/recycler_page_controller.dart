@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/models/reciclador.dart';
 import 'package:estacao_pilhas/models/usuario.dart';
 import 'package:estacao_pilhas/services/maquina_service.dart';
 import 'package:estacao_pilhas/services/usuario_service.dart';
@@ -16,28 +15,38 @@ class RecyclerPageController {
   }
 
   Future<List<Marker>> getStations() async {
-    sleep(const Duration(seconds: 5));
     List<Maquina> maquinaList = await MaquinaService().getMaquinaList();
     List<Marker> markerList = [];
 
     for (Maquina maquina in maquinaList) {
-      markerList.add(
-        Marker(
-          point:
-              LatLng(maquina.endereco!.latitude!, maquina.endereco!.longitude!),
-          width: 35,
-          height: 35,
-          builder: (context) => IconButton(
-              onPressed: () => _showStationInfoDialog(maquina, context),
-              icon: const Icon(
-                Icons.location_on,
-                size: 35,
-              )),
-        ),
-      );
+      if (maquina.endereco != null) {
+        markerList.add(
+          Marker(
+            point: LatLng(
+                maquina.endereco!.latitude!, maquina.endereco!.longitude!),
+            width: 35,
+            height: 35,
+            builder: (context) => IconButton(
+                onPressed: () => _showStationInfoDialog(maquina, context),
+                icon: const Icon(
+                  Icons.location_on,
+                  size: 35,
+                )),
+          ),
+        );
+      }
     }
 
     return markerList;
+  }
+
+  Future<String> getRecyclerCredits() async {
+    Usuario usuario = await UsuarioService().getUserInfo();
+
+    Reciclador requestedCredits =
+        await UsuarioService().getCredits(usuario.id!);
+
+    return requestedCredits.credito!;
   }
 
   Future<void> _showStationInfoDialog(

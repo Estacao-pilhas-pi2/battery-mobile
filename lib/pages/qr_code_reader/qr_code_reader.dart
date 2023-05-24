@@ -10,24 +10,29 @@ class QrCodeReader extends StatefulWidget {
       : super(key: key);
 
   final String displayText;
-  final void Function(dynamic barcodes, BuildContext context) onRead;
+  final bool Function(dynamic barcodes, BuildContext context) onRead;
   @override
   State<QrCodeReader> createState() => _QrCodeReaderState();
 }
 
 class _QrCodeReaderState extends State<QrCodeReader> {
+  final MobileScannerController _mobileScannerController =
+      MobileScannerController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: [
       MobileScanner(
+        controller: _mobileScannerController,
         onDetect: (capture) {
           final List<Barcode> barcodes = capture.barcodes;
           for (final barcode in barcodes) {
             final barcodeRaw = barcode.rawValue;
             if (barcodeRaw != null) {
               final qrCodeObject = json.decode(barcodeRaw);
-              widget.onRead(qrCodeObject, context);
+              if (widget.onRead(qrCodeObject, context)) {
+                _mobileScannerController.events?.cancel();
+              }
             }
           }
         },

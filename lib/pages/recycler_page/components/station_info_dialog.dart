@@ -22,7 +22,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            DialogInfoText(Icons.numbers, "ID: ${widget.station.idMaquina}"),
+            DialogInfoText(Icons.numbers, "ID: ${widget.station.id}"),
             DialogInfoText(Icons.place, "Local: ${widget.station.endereco}"),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
@@ -49,23 +49,57 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                       )),
                     ],
                   ),
-                  for (int index = 0;
-                      index < widget.station.precos!.length;
-                      index++)
-                    TableRow(
-                      children: <Widget>[
-                        Text(
-                          widget.station.precos![index].nome,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Center(
-                            child: Text(
-                                "${widget.station.precos![index].creditos}")),
-                        Center(
-                            child: Text(
-                                "${widget.station.qtdPilhas![index].creditos}/100")),
-                      ],
-                    ),
+                  TableRow(
+                    children: <Widget>[
+                      const Text(
+                        "AA",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Center(child: Text(widget.station.precoAA.toString())),
+                      Center(child: Text("${widget.station.quantidadeAA}/100")),
+                    ],
+                  ),
+                  TableRow(
+                    children: <Widget>[
+                      const Text(
+                        "AAA",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Center(child: Text(widget.station.precoAAA.toString())),
+                      Center(
+                          child: Text("${widget.station.quantidadeAAA}/100")),
+                    ],
+                  ),
+                  TableRow(
+                    children: <Widget>[
+                      const Text(
+                        "C",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Center(child: Text(widget.station.precoC.toString())),
+                      Center(child: Text("${widget.station.quantidadeC}/100")),
+                    ],
+                  ),
+                  TableRow(
+                    children: <Widget>[
+                      const Text(
+                        "D",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Center(child: Text(widget.station.precoD.toString())),
+                      Center(child: Text("${widget.station.quantidadeD}/100")),
+                    ],
+                  ),
+                  TableRow(
+                    children: <Widget>[
+                      const Text(
+                        "9V",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Center(child: Text(widget.station.precoV9.toString())),
+                      Center(child: Text("${widget.station.quantidadeV9}/100")),
+                    ],
+                  ),
                 ],
               ),
             ),

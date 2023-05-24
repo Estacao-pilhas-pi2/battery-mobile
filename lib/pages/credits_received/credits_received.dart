@@ -3,7 +3,8 @@ import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:flutter/material.dart';
 
 class CreditsReceived extends StatefulWidget {
-  const CreditsReceived({super.key});
+  final String paymentId;
+  const CreditsReceived({super.key, required this.paymentId});
 
   @override
   State<CreditsReceived> createState() => _CreditsReceivedState();
@@ -127,8 +128,10 @@ class _CreditsReceivedState extends State<CreditsReceived> {
               Padding(
                 padding: const EdgeInsets.only(top: 35),
                 child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const RecyclerPage())),
+                  onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const RecyclerPage()),
+                      (Route<dynamic> route) => false),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(216, 58),
                     shape: RoundedRectangleBorder(
