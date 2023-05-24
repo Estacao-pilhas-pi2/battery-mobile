@@ -2,6 +2,7 @@ import 'package:estacao_pilhas/models/usuario.dart';
 import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:estacao_pilhas/pages/register/register.dart';
 import 'package:flutter/material.dart';
+import '../../components/error_dialog.dart';
 import '../credits_received/credits_received.dart';
 import 'controllers/login_controller.dart';
 
@@ -32,19 +33,27 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Future submitLogin() async {
     setState(() => isLoading = true);
 
-    Usuario? usuario = await LoginController()
+    var response = await LoginController()
         .login(nameController.text, passwordController.text);
 
     setState(() => isLoading = false);
 
-    if (mounted && usuario != null) {
+    if (mounted && response is Usuario) {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
         builder: (BuildContext qrCodeContext) {
-          return usuario.estabelecimento!
+          return response.estabelecimento!
               ? const CreditsReceived()
               : const RecyclerPage();
         },
       ), (Route<dynamic> route) => false);
+    } else {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return ErrorDialog(message: response);
+        },
+      );
     }
   }
 

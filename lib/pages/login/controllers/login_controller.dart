@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:estacao_pilhas/globals/utils.dart';
 import 'package:estacao_pilhas/models/usuario.dart';
@@ -8,7 +7,7 @@ import '../../../globals/secure_storage.dart';
 import '../../../services/usuario_service.dart';
 
 class LoginController {
-  Future<Usuario?> login(String email, String password) async {
+  Future login(String email, String password) async {
     try {
       Usuario requestedUser = await UsuarioService().login(email, password);
       SecureStorage secureStorage = SecureStorage();
@@ -18,8 +17,7 @@ class LoginController {
 
       return requestedUser;
     } catch (error) {
-      log(error.toString());
-      return null;
+      return error.toString();
     }
   }
 }
