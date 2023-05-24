@@ -1,6 +1,7 @@
 class Pilha {
-  String nome;
-  int creditos;
+  final String nome;
+  final int? creditos;
+  final int? quantidade;
 
-  Pilha(this.nome, this.creditos);
+  const Pilha({this.creditos, this.quantidade, required this.nome});
 }

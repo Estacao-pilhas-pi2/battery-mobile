@@ -1,28 +1,51 @@
+import 'dart:developer';
+
 import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
-import 'package:estacao_pilhas/pages/machine_register/values_register.dart';
+import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
 import 'package:estacao_pilhas/utils/input_masks.dart';
 import 'package:flutter/material.dart';
 
-class LocationRegister extends StatefulWidget {
-  const LocationRegister({Key? key, required this.machineId}) : super(key: key);
-
+class LocationForm extends StatefulWidget {
   final int machineId;
+  final Maquina? machine;
+
+  const LocationForm({Key? key, required this.machineId, this.machine})
+      : super(key: key);
 
   @override
-  State<LocationRegister> createState() => _LocationRegisterState();
+  State<LocationForm> createState() => _LocationFormState();
 }
 
-class _LocationRegisterState extends State<LocationRegister> {
+class _LocationFormState extends State<LocationForm> {
   String? _cep;
-  String? _rua;
   String? _bairro;
   int? _numero;
   String? _complemento;
   String? _cidade;
   String? _estado;
+  String? _descricao;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    initialData();
+  }
+
+  void initialData() async {
+    if (widget.machine != null) {
+      _cep = widget.machine?.endereco.cep;
+      _bairro = widget.machine?.endereco.bairro;
+      _cidade = widget.machine?.endereco.cidade;
+      _estado = widget.machine?.endereco.estado;
+      _numero = widget.machine?.endereco.numero;
+      _complemento = widget.machine?.endereco.complemento;
+      _descricao = widget.machine?.endereco.descricao;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +59,13 @@ class _LocationRegisterState extends State<LocationRegister> {
             child: Column(
               children: [
                 const SizedBox(height: 25),
+                RoundedButton(
+                  onPressed: () => log("localização"),
+                  text: "Pegar Localização atual",
+                ),
+                const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.machine?.endereco.cep ?? "",
                   label: "CEP",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -47,14 +76,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  label: "Rua",
-                  notEmpty: true,
-                  onSave: (String? value) {
-                    _rua = value;
-                  },
-                ),
-                const SizedBox(height: 25),
-                CustomTextField(
+                  initialValue: widget.machine?.endereco.bairro ?? "",
                   label: "Bairro",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -63,6 +85,17 @@ class _LocationRegisterState extends State<LocationRegister> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.machine?.endereco.descricao ?? "",
+                  label: "Descriçao",
+                  notEmpty: true,
+                  onSave: (String? value) {
+                    _descricao = value;
+                  },
+                ),
+                const SizedBox(height: 25),
+                CustomTextField(
+                  initialValue:
+                      widget.machine?.endereco.numero.toString() ?? "",
                   label: "Número",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -72,6 +105,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.machine?.endereco.complemento ?? "",
                   label: "Complemento",
                   onSave: (String? value) {
                     _complemento = value;
@@ -79,6 +113,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.machine?.endereco.cidade ?? "",
                   label: "Cidade",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -87,6 +122,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.machine?.endereco.estado ?? "",
                   label: "Estado",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -96,7 +132,7 @@ class _LocationRegisterState extends State<LocationRegister> {
                 const SizedBox(height: 25),
                 RoundedButton(
                   onPressed: submit,
-                  text: "Próximo",
+                  text: widget.machine != null ? "Salvar" : "Próximo",
                 ),
                 const SizedBox(height: 10),
               ],
@@ -113,13 +149,18 @@ class _LocationRegisterState extends State<LocationRegister> {
     }
     _formKey.currentState!.save();
 
+    if (widget.machine != null) {
+      Navigator.of(context).pop();
+      return;
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext qrCodeContext) {
-          return ValuesRegister(
+          return ValuesForm(
               machineId: widget.machineId,
               cep: _cep,
-              rua: _rua,
+              descricao: _descricao,
               bairro: _bairro,
               numero: _numero,
               complemento: _complemento,
