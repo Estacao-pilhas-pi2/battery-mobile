@@ -61,7 +61,7 @@ class _ManageMachineState extends State<ManageMachine> {
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => LocationForm(
                             machineId: machine.id!,
-                            machine: machine,
+                            maquina: machine,
                           ))),
                   fixedSize: const Size(165, 40),
                   padding: const EdgeInsets.symmetric(horizontal: 120),

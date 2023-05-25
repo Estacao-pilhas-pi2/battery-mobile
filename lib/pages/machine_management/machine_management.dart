@@ -2,6 +2,8 @@ import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
+import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
 import 'package:flutter/material.dart';
 
 class MachineManagement extends StatefulWidget {
@@ -49,15 +51,15 @@ class _MachineManagementState extends State<MachineManagement> {
                         Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('AAA: ${widget.machine.quantidade_AAA}/100'),
-                              Text('AA: ${widget.machine.quantidade_AA}/100'),
-                              Text('C: ${widget.machine.quantidade_C}/100'),
+                              Text('AAA: ${widget.machine.quantidadeAAA}/100'),
+                              Text('AA: ${widget.machine.quantidadeAA}/100'),
+                              Text('C: ${widget.machine.quantidadeC}/100'),
                             ]),
                         Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('9V: ${widget.machine.quantidade_V9}/100'),
-                              Text('D: ${widget.machine.quantidade_D}/100'),
+                              Text('9V: ${widget.machine.quantidadeV9}/100'),
+                              Text('D: ${widget.machine.quantidadeD}/100'),
                             ]),
                       ],
                     ),
@@ -90,8 +92,15 @@ class _MachineManagementState extends State<MachineManagement> {
             RoundedButton(
               text: "Editar Localização",
               backgroundColor: StaticColors.onPrimary,
-              textColor: StaticColors.primary,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return LocationForm(
+                    machineId: widget.machine.id!,
+                    maquina: widget.machine,
+                  );
+                }));
+              },
             ),
             const SizedBox(
               height: 25,
@@ -99,8 +108,15 @@ class _MachineManagementState extends State<MachineManagement> {
             RoundedButton(
               text: "Editar Créditos",
               backgroundColor: StaticColors.onPrimary,
-              textColor: StaticColors.primary,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return ValuesForm(
+                    machineId: widget.machine.id,
+                    maquina: widget.machine,
+                  );
+                }));
+              },
             ),
             const SizedBox(
               height: 25,
@@ -108,8 +124,9 @@ class _MachineManagementState extends State<MachineManagement> {
             RoundedButton(
               text: "Esvaziar Máquina",
               backgroundColor: StaticColors.onPrimary,
-              textColor: StaticColors.primary,
-              onPressed: () {},
+              onPressed: () {
+                debugPrint("TO-DO: Integrar com endpoint de esvaziar máquina");
+              },
             ),
             const SizedBox(
               height: 50,
@@ -135,7 +152,10 @@ class _MachineManagementState extends State<MachineManagement> {
             ),
             RoundedButton(
               text: "Salvar",
-              onPressed: () {},
+              onPressed: () {
+                debugPrint("TO-DO: Integrar com endpoint de patch");
+                Navigator.of(context).pop();
+              },
             ),
             const SizedBox(
               height: 25,
@@ -143,8 +163,10 @@ class _MachineManagementState extends State<MachineManagement> {
             RoundedButton(
               text: "Excluir",
               backgroundColor: StaticColors.onPrimary,
-              textColor: StaticColors.primary,
-              onPressed: () {},
+              onPressed: () {
+                debugPrint("TO-DO: Integrar com endpoint de excluir");
+                Navigator.of(context).pop();
+              },
             ),
           ],
         ),

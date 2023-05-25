@@ -1,11 +1,12 @@
 class Endereco {
   String? cep;
-  String? estado;
-  String? cidade;
-  String? bairro;
   String? rua;
+  String? bairro;
+  String? cidade;
+  String? estado;
   int? numero;
   String? complemento;
+  String? descricao;
   double? latitude;
   double? longitude;
 
@@ -17,6 +18,7 @@ class Endereco {
       this.rua,
       this.numero,
       this.complemento,
+      this.descricao,
       this.latitude,
       this.longitude});
 

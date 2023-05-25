@@ -3,6 +3,7 @@ import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ValuesForm extends StatefulWidget {
   const ValuesForm(
@@ -15,6 +16,7 @@ class ValuesForm extends StatefulWidget {
       this.complemento,
       this.cidade,
       this.estado,
+      this.localizacao,
       this.maquina})
       : super(key: key);
 
@@ -26,6 +28,7 @@ class ValuesForm extends StatefulWidget {
   final String? complemento;
   final String? cidade;
   final String? estado;
+  final Position? localizacao;
   final Maquina? maquina;
 
   @override
@@ -136,22 +139,23 @@ class _ValuesFormState extends State<ValuesForm> {
     }
     _formKey.currentState!.save();
 
-    if (widget.maquina != null) {
+    if (widget.maquina == null) {
+      debugPrint('cep : ${widget.cep}');
+      debugPrint('rua : ${widget.rua}');
+      debugPrint('bairro : ${widget.bairro}');
+      debugPrint('número : ${widget.numero}');
+      debugPrint('complemento : ${widget.complemento}');
+      debugPrint('cidade : ${widget.cidade}');
+      debugPrint('estado : ${widget.estado}');
+      debugPrint('9V : $_9v');
+      debugPrint('AAA : $_AAA');
+      debugPrint('AA : $_AA');
+      debugPrint('C : $_C');
+      debugPrint('D : $_D');
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } else {
+      debugPrint("TO-DO: Integrar com endpoint de patch");
       Navigator.of(context).pop();
-      return;
     }
-
-    debugPrint('cep : ${widget.cep}');
-    debugPrint('descricao : ${widget.rua}');
-    debugPrint('bairro : ${widget.bairro}');
-    debugPrint('número : ${widget.numero}');
-    debugPrint('complemento : ${widget.complemento}');
-    debugPrint('cidade : ${widget.cidade}');
-    debugPrint('estado : ${widget.estado}');
-    debugPrint('9V : $_9v');
-    debugPrint('AAA : $_AAA');
-    debugPrint('AA : $_AA');
-    debugPrint('C : $_C');
-    debugPrint('D : $_D');
   }
 }
