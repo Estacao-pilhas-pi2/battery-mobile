@@ -9,7 +9,7 @@ class ValuesForm extends StatefulWidget {
       {Key? key,
       this.machineId,
       this.cep,
-      this.descricao,
+      this.rua,
       this.bairro,
       this.numero,
       this.complemento,
@@ -20,7 +20,7 @@ class ValuesForm extends StatefulWidget {
 
   final int? machineId;
   final String? cep;
-  final String? descricao;
+  final String? rua;
   final String? bairro;
   final int? numero;
   final String? complemento;
@@ -33,11 +33,11 @@ class ValuesForm extends StatefulWidget {
 }
 
 class _ValuesFormState extends State<ValuesForm> {
-  int? _9v;
-  int? _AAA;
-  int? _AA;
-  int? _C;
-  int? _D;
+  String? _9v;
+  String? _AAA;
+  String? _AA;
+  String? _C;
+  String? _D;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -47,11 +47,11 @@ class _ValuesFormState extends State<ValuesForm> {
 
   void initialData() {
     if (widget.maquina != null) {
-      _9v = widget.maquina?.precos[0].creditos;
-      _AAA = widget.maquina?.precos[1].creditos;
-      _AA = widget.maquina?.precos[2].creditos;
-      _C = widget.maquina?.precos[3].creditos;
-      _D = widget.maquina?.precos[4].creditos;
+      _9v = widget.maquina?.precoV9;
+      _AAA = widget.maquina?.precoAAA;
+      _AA = widget.maquina?.precoAA;
+      _C = widget.maquina?.precoC;
+      _D = widget.maquina?.precoD;
     }
   }
 
@@ -68,57 +68,52 @@ class _ValuesFormState extends State<ValuesForm> {
               children: [
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue:
-                      widget.maquina?.precos[0].creditos.toString() ?? "",
+                  initialValue: widget.maquina?.precoV9 ?? "",
                   label: "Créditos por pilha 9V",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _9v = int.parse(value);
+                    _9v = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue:
-                      widget.maquina?.precos[1].creditos.toString() ?? "",
+                  initialValue: widget.maquina?.precoAAA ?? "",
                   label: "Créditos por pilha AAA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _AAA = int.parse(value);
+                    _AAA = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue:
-                      widget.maquina?.precos[2].creditos.toString() ?? "",
+                  initialValue: widget.maquina?.precoAA ?? "",
                   label: "Créditos por pilha AA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _AA = int.parse(value);
+                    _AA = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue:
-                      widget.maquina?.precos[3].creditos.toString() ?? "",
+                  initialValue: widget.maquina?.precoC ?? "",
                   label: "Créditos por pilha C",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _C = int.parse(value);
+                    _C = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue:
-                      widget.maquina?.precos[4].creditos.toString() ?? "",
+                  initialValue: widget.maquina?.precoD ?? "",
                   label: "Créditos por pilha D",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _D = int.parse(value);
+                    _D = value;
                   },
                 ),
                 const SizedBox(height: 25),
@@ -147,7 +142,7 @@ class _ValuesFormState extends State<ValuesForm> {
     }
 
     debugPrint('cep : ${widget.cep}');
-    debugPrint('descricao : ${widget.descricao}');
+    debugPrint('descricao : ${widget.rua}');
     debugPrint('bairro : ${widget.bairro}');
     debugPrint('número : ${widget.numero}');
     debugPrint('complemento : ${widget.complemento}');

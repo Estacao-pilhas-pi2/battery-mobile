@@ -5,6 +5,7 @@ import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../models/usuario.dart';
 import '../credits_received/credits_received.dart';
 import '../qr_code_reader/qr_code_reader.dart';
 import 'components/location_error_dialog.dart';
@@ -18,8 +19,8 @@ class RecyclerPage extends StatefulWidget {
 }
 
 class _RecyclerPageState extends State<RecyclerPage> {
-  late String username = "";
-  late int credits = 5;
+  late Usuario usuario = Usuario();
+  late String creditos = "1.0";
   final MapController _mapController = MapController();
   List<Marker> markerList = [];
   late Position userLocation = Position(
@@ -86,12 +87,15 @@ class _RecyclerPageState extends State<RecyclerPage> {
     List<Marker> requestedMarkerList =
         await RecyclerPageController().getStations();
     Position requestedPosition = await getUserPosition();
+    Usuario requestedUser = await RecyclerPageController().getUserInfo();
+    String requestedCredits =
+        await RecyclerPageController().getRecyclerCredits();
 
     setState(() {
       markerList = requestedMarkerList;
       userLocation = requestedPosition;
-      username = "Usuário";
-      credits = 20;
+      usuario = requestedUser;
+      creditos = requestedCredits;
       isScreenLoading = false;
     });
   }
@@ -124,7 +128,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 28),
                       child: Text(
-                        "Bem vindo(a) $username",
+                        "Bem vindo(a) ${usuario.nome}",
                         style: const TextStyle(fontSize: 20),
                       ),
                     ),
@@ -152,7 +156,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                               ),
                               const Spacer(),
                               Text(
-                                "$credits Créditos",
+                                "$creditos Créditos",
                                 style: TextStyle(
                                     color: StaticColors.onPrimary,
                                     fontSize: 18),
@@ -216,12 +220,18 @@ class _RecyclerPageState extends State<RecyclerPage> {
                           displayText:
                               "Leia o Código QR localizado na parte X da máquina",
                           onRead: (capture, context) {
-                            if (capture['id'] != null) {
+                            if (capture['id_pagamento'] != null) {
                               debugPrint('Valor lido: $capture');
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CreditsReceived()));
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => CreditsReceived(
+                                          paymentId: capture['id_pagamento']
+                                              .toString())),
+                                  (Route<dynamic> route) => route.isFirst);
+                              return true;
                             } else {
                               debugPrint('Valor errado');
+                              return false;
                             }
                           },
                         ),

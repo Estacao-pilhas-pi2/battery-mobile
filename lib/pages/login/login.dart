@@ -42,7 +42,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
         builder: (BuildContext qrCodeContext) {
           return response.estabelecimento!
-              ? const CreditsReceived()
+              ? const CreditsReceived(paymentId: "")
               : const RecyclerPage();
         },
       ), (Route<dynamic> route) => false);

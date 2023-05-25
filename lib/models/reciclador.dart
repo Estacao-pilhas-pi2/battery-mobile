@@ -1,23 +1,26 @@
-import 'usuario.dart';
-
 class Reciclador {
-  Usuario? usuario;
+  int? id;
+  int? usuario;
   String? cpf;
+  String? credito;
 
   Reciclador({this.usuario, this.cpf});
 
   Reciclador.fromJson(Map<String, dynamic> json) {
-    usuario =
-        json['usuario'] != null ? Usuario.fromJson(json['usuario']) : null;
+    usuario = json['usuario'];
+    id = json['id'];
     cpf = json['cpf'];
+    credito = json['credito'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (usuario != null) {
-      data['usuario'] = usuario!.toJson();
+      data['usuario'] = usuario;
     }
+    data['id'] = id;
     data['cpf'] = cpf;
+    data['credito'] = credito;
     return data;
   }
 }

@@ -1,12 +1,11 @@
 import 'package:estacao_pilhas/globals/colors.dart';
+import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/pilha.dart';
-
 class BatteryStorage extends StatelessWidget {
-  final List<Pilha> batteryList;
+  final Maquina machine;
 
-  const BatteryStorage({super.key, required this.batteryList});
+  const BatteryStorage({super.key, required this.machine});
 
   @override
   Widget build(BuildContext context) {
@@ -50,17 +49,17 @@ class BatteryStorage extends StatelessWidget {
               children: [
                 Column(children: [
                   Text(
-                    "${batteryList[0].nome}: ${batteryList[0].quantidade}/100",
+                    "9V: ${machine.quantidadeV9}/100",
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w300),
                   ),
                   Text(
-                    "${batteryList[1].nome}: ${batteryList[1].quantidade}/100",
+                    "AAA: ${machine.quantidadeAAA}/100",
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w300),
                   ),
                   Text(
-                    "${batteryList[2].nome}: ${batteryList[2].quantidade}/100",
+                    "AA: ${machine.quantidadeAA}/100",
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w300),
                   ),
@@ -71,12 +70,12 @@ class BatteryStorage extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      "${batteryList[3].nome}: ${batteryList[3].quantidade}/100",
+                      "C: ${machine.quantidadeC}/100",
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w300),
                     ),
                     Text(
-                      "${batteryList[4].nome}: ${batteryList[4].quantidade}/100",
+                      "D: ${machine.quantidadeD}/100",
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w300),
                     ),

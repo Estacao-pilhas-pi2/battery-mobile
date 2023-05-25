@@ -7,7 +7,6 @@ import 'package:estacao_pilhas/pages/manage_machine/controllers/manage_machine_p
 import 'package:flutter/material.dart';
 
 import '../../components/rounded_button.dart';
-import '../../models/pilha.dart';
 import '../machine_form/values_form.dart';
 import 'components/battery_storage.dart';
 
@@ -54,14 +53,14 @@ class _ManageMachineState extends State<ManageMachine> {
                 const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 35),
-                  child: BatteryStorage(batteryList: machine.qtdPilhas),
+                  child: BatteryStorage(machine: machine),
                 ),
                 const SizedBox(height: 30),
                 RoundedButton(
                   text: "Editar Localização",
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => LocationForm(
-                            machineId: machine.idMaquina,
+                            machineId: machine.id!,
                             machine: machine,
                           ))),
                   fixedSize: const Size(165, 40),

@@ -1,77 +1,52 @@
-import 'dart:io';
-
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/models/reciclador.dart';
+import 'package:estacao_pilhas/models/usuario.dart';
+import 'package:estacao_pilhas/services/maquina_service.dart';
+import 'package:estacao_pilhas/services/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../models/endereco.dart';
-import '../../../models/pilha.dart';
 import '../components/station_info_dialog.dart';
 
-// Future<void> getUserInfo() {}
 class RecyclerPageController {
+  Future<Usuario> getUserInfo() async {
+    return await UsuarioService().getUserInfo();
+  }
+
   Future<List<Marker>> getStations() async {
-    sleep(const Duration(seconds: 5));
-    List<Maquina> maquinaList = [
-      Maquina(
-          "Maquina 1",
-          1,
-          [
-            const Pilha(nome: "9V", quantidade: 1),
-            const Pilha(nome: "AAA", quantidade: 2),
-            const Pilha(nome: "AA", quantidade: 3),
-            const Pilha(nome: "C", quantidade: 4),
-            const Pilha(nome: "D", quantidade: 5)
-          ],
-          [
-            const Pilha(nome: "9V", creditos: 1),
-            const Pilha(nome: "AAA", creditos: 2),
-            const Pilha(nome: "AA", creditos: 3),
-            const Pilha(nome: "C", creditos: 4),
-            const Pilha(nome: "D", creditos: 5)
-          ],
-          Endereco("cep", "bairro", "cidade", "estado", 5, "complemento",
-              "descricao", -15.8014, -47.8823)),
-      Maquina(
-          "descricao",
-          2,
-          [
-            const Pilha(nome: "9V", creditos: 5),
-            const Pilha(nome: "AAA", creditos: 4),
-            const Pilha(nome: "AA", creditos: 3),
-            const Pilha(nome: "C", creditos: 2),
-            const Pilha(nome: "D", creditos: 1)
-          ],
-          [
-            const Pilha(nome: "9V", creditos: 5),
-            const Pilha(nome: "AAA", creditos: 4),
-            const Pilha(nome: "AA", creditos: 3),
-            const Pilha(nome: "C", creditos: 2),
-            const Pilha(nome: "D", creditos: 1)
-          ],
-          Endereco("cep", "bairro", "cidade", "estado", 5, "complemento",
-              "descricao", -15.7996, -47.8823))
-    ];
+    List<Maquina> maquinaList = await MaquinaService().getMaquinaList();
     List<Marker> markerList = [];
 
     for (Maquina maquina in maquinaList) {
-      markerList.add(
-        Marker(
-          point: LatLng(maquina.endereco.latitude, maquina.endereco.longitude),
-          width: 35,
-          height: 35,
-          builder: (context) => IconButton(
-              onPressed: () => _showStationInfoDialog(maquina, context),
-              icon: const Icon(
-                Icons.location_on,
-                size: 35,
-              )),
-        ),
-      );
+      if (maquina.endereco != null) {
+        markerList.add(
+          Marker(
+            point: LatLng(
+                maquina.endereco!.latitude!, maquina.endereco!.longitude!),
+            width: 35,
+            height: 35,
+            builder: (context) => IconButton(
+                onPressed: () => _showStationInfoDialog(maquina, context),
+                icon: const Icon(
+                  Icons.location_on,
+                  size: 35,
+                )),
+          ),
+        );
+      }
     }
 
     return markerList;
+  }
+
+  Future<String> getRecyclerCredits() async {
+    Usuario usuario = await UsuarioService().getUserInfo();
+
+    Reciclador requestedCredits =
+        await UsuarioService().getCredits(usuario.id!);
+
+    return requestedCredits.credito!;
   }
 
   Future<void> _showStationInfoDialog(

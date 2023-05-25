@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:estacao_pilhas/models/pilha.dart';
-
 import '../../../models/endereco.dart';
 import '../../../models/maquina.dart';
 
@@ -10,24 +8,30 @@ class ManageMachineController {
     sleep(const Duration(seconds: 5));
 
     Maquina requestedMaquina = Maquina(
-        "Maquina 1",
-        1,
-        [
-          const Pilha(nome: "9V", quantidade: 1),
-          const Pilha(nome: "AAA", quantidade: 2),
-          const Pilha(nome: "AA", quantidade: 3),
-          const Pilha(nome: "C", quantidade: 4),
-          const Pilha(nome: "D", quantidade: 5)
-        ],
-        [
-          const Pilha(nome: "9V", creditos: 1),
-          const Pilha(nome: "AAA", creditos: 2),
-          const Pilha(nome: "AA", creditos: 3),
-          const Pilha(nome: "C", creditos: 4),
-          const Pilha(nome: "D", creditos: 5)
-        ],
-        Endereco("cep", "bairro", "cidade", "estado", 5, "complemento",
-            "descricao", -15.8014, -47.8823));
+        id: 1,
+        endereco: Endereco(
+            cep: "12345678",
+            estado: "SP",
+            cidade: "São Paulo",
+            bairro: "Centro",
+            rua: "Avenida Principal",
+            numero: 123,
+            complemento: "Verde",
+            latitude: -15.80040000,
+            longitude: -47.88220000),
+        descricao: "null",
+        precoAAA: "0.00",
+        precoAA: "0.00",
+        precoC: "0.00",
+        precoD: "0.00",
+        precoV9: "0.00",
+        quantidadeAAA: 0,
+        quantidadeAA: 0,
+        quantidadeC: 0,
+        quantidadeD: 0,
+        quantidadeV9: 0,
+        limiteMaximo: "70.00",
+        estabelecimento: 1);
 
     return requestedMaquina;
   }

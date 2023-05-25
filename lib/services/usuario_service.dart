@@ -4,14 +4,16 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
+import '../globals/secure_storage.dart';
 import '../globals/utils.dart';
+import '../models/reciclador.dart';
 import '../models/register_response.dart';
 import '../models/usuario.dart';
 
 class UsuarioService {
   static String loginEndpoint = "/api/login/";
   static String registerEstabelecimento = "/api/estabelecimento/";
-  static String registerReciclador = "/api/reciclador/";
+  static String recicladorEndpoint = "/api/reciclador/";
 
   Future<Usuario> login(String email, String password) async {
     final url = Uri.parse(Utils.url + loginEndpoint);
@@ -42,7 +44,7 @@ class UsuarioService {
     Object? body;
 
     if (userType == "Reciclador") {
-      endpoint = registerReciclador;
+      endpoint = recicladorEndpoint;
       body = {
         "usuario": {"nome": nome, "email": email, "senha": senha},
         "cpf": identification
@@ -79,6 +81,33 @@ class UsuarioService {
         }
       }
       return false;
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informaçoes');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
+
+  Future<Usuario> getUserInfo() async {
+    SecureStorage secureStorage = SecureStorage();
+    var secureStorageUser = await secureStorage.read(Utils.userKey);
+
+    return Usuario.fromJson(jsonDecode(secureStorageUser));
+  }
+
+  Future<Reciclador> getCredits(String id) async {
+    final url = Uri.parse("${Utils.url}$recicladorEndpoint$id/");
+
+    try {
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        return Reciclador.fromJson(jsonDecode(response.body));
+      } else {
+        throw const HttpException('Não foi possível acessar os dados.');
+      }
     } catch (error) {
       if (error is TimeoutException) {
         throw const HttpException('Ocorreu um erro ao carregar as informaçoes');
