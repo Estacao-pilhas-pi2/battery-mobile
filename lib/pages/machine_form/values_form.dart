@@ -60,7 +60,7 @@ class _ValuesFormState extends State<ValuesForm> {
     return SafeArea(
       child: BaseForm(
         appBarText: "Registrar Máquina",
-        children: Form(
+        child: Form(
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),

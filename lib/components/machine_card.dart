@@ -1,5 +1,6 @@
 import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/pages/manage_machine/manage_machine_page.dart';
 import 'package:flutter/material.dart';
 
 class MachineCard extends StatelessWidget {
@@ -31,14 +32,21 @@ class MachineCard extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           getBatteryIcon(machine.getCurrentBatteries()),
-          size: 72,
+          size: 50,
           color: StaticColors.onSecondary,
         ),
-        title: Text('Máquina: ${machine.idMaquina}'),
+        title: Text('Máquina: ${machine.id}'),
         subtitle: Text(machine.endereco.toString()),
         isThreeLine: true,
         tileColor: StaticColors.secondary,
         trailing: Text('${machine.getCurrentBatteries()}/100'),
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return ManageMachine(
+              machineId: machine.id!,
+            );
+          }));
+        },
       ),
     );
   }

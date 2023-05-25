@@ -52,7 +52,7 @@ class _LocationFormState extends State<LocationForm> {
     return SafeArea(
       child: BaseForm(
         appBarText: "Registrar Máquina",
-        children: Form(
+        child: Form(
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),

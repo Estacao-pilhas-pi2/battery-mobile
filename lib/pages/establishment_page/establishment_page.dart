@@ -2,7 +2,7 @@ import 'package:estacao_pilhas/components/machine_card.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/establishment_page/controllers/establishment_page_controller.dart';
-import 'package:estacao_pilhas/pages/machine_register/location_register.dart';
+import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
 import 'package:estacao_pilhas/pages/qr_code_reader/qr_code_reader.dart';
 import 'package:flutter/material.dart';
 
@@ -71,9 +71,10 @@ class _EstablishmentPageState extends State<EstablishmentPage> {
                                 onRead: (capture, qrCodeContext) {
                                   Navigator.of(context).push(
                                       MaterialPageRoute(builder: (context) {
-                                    return LocationRegister(
+                                    return LocationForm(
                                         machineId: capture['id']);
                                   }));
+                                  return true;
                                 });
                           }));
                         },
