@@ -1,22 +1,24 @@
 import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
+import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:flutter/material.dart';
 
-class ValuesRegister extends StatefulWidget {
-  const ValuesRegister(
+class ValuesForm extends StatefulWidget {
+  const ValuesForm(
       {Key? key,
-      required this.machineId,
-      required this.cep,
-      required this.rua,
-      required this.bairro,
-      required this.numero,
-      required this.complemento,
-      required this.cidade,
-      required this.estado})
+      this.machineId,
+      this.cep,
+      this.rua,
+      this.bairro,
+      this.numero,
+      this.complemento,
+      this.cidade,
+      this.estado,
+      this.maquina})
       : super(key: key);
 
-  final int machineId;
+  final int? machineId;
   final String? cep;
   final String? rua;
   final String? bairro;
@@ -24,18 +26,34 @@ class ValuesRegister extends StatefulWidget {
   final String? complemento;
   final String? cidade;
   final String? estado;
+  final Maquina? maquina;
 
   @override
-  State<ValuesRegister> createState() => _ValuesRegisterState();
+  State<ValuesForm> createState() => _ValuesFormState();
 }
 
-class _ValuesRegisterState extends State<ValuesRegister> {
-  int? _9v;
-  int? _AAA;
-  int? _AA;
-  int? _C;
-  int? _D;
+class _ValuesFormState extends State<ValuesForm> {
+  String? _9v;
+  String? _AAA;
+  String? _AA;
+  String? _C;
+  String? _D;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void initialData() {
+    if (widget.maquina != null) {
+      _9v = widget.maquina?.precoV9;
+      _AAA = widget.maquina?.precoAAA;
+      _AA = widget.maquina?.precoAA;
+      _C = widget.maquina?.precoC;
+      _D = widget.maquina?.precoD;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,53 +68,58 @@ class _ValuesRegisterState extends State<ValuesRegister> {
               children: [
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.maquina?.precoV9 ?? "",
                   label: "Créditos por pilha 9V",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _9v = int.parse(value);
+                    _9v = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.maquina?.precoAAA ?? "",
                   label: "Créditos por pilha AAA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _AAA = int.parse(value);
+                    _AAA = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.maquina?.precoAA ?? "",
                   label: "Créditos por pilha AA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _AA = int.parse(value);
+                    _AA = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.maquina?.precoC ?? "",
                   label: "Créditos por pilha C",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _C = int.parse(value);
+                    _C = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
+                  initialValue: widget.maquina?.precoD ?? "",
                   label: "Créditos por pilha D",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _D = int.parse(value);
+                    _D = value;
                   },
                 ),
                 const SizedBox(height: 25),
                 RoundedButton(
                   onPressed: submit,
-                  text: "Registrar",
+                  text: widget.maquina != null ? "Salvar" : "Registrar",
                 ),
                 const SizedBox(height: 10),
               ],
@@ -113,8 +136,13 @@ class _ValuesRegisterState extends State<ValuesRegister> {
     }
     _formKey.currentState!.save();
 
+    if (widget.maquina != null) {
+      Navigator.of(context).pop();
+      return;
+    }
+
     debugPrint('cep : ${widget.cep}');
-    debugPrint('rua : ${widget.rua}');
+    debugPrint('descricao : ${widget.rua}');
     debugPrint('bairro : ${widget.bairro}');
     debugPrint('número : ${widget.numero}');
     debugPrint('complemento : ${widget.complemento}');
