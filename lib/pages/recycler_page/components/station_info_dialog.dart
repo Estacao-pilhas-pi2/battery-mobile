@@ -28,7 +28,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
               child: Table(
                 columnWidths: const <int, TableColumnWidth>{
-                  0: FixedColumnWidth(50),
+                  0: FixedColumnWidth(40),
                   1: FlexColumnWidth(),
                   2: FlexColumnWidth(),
                 },

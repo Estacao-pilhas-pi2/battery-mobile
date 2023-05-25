@@ -28,8 +28,8 @@ class Endereco {
     rua = json['rua'];
     numero = json['numero'];
     complemento = json['complemento'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
+    latitude = double.parse(json['latitude']);
+    longitude = double.parse(json['longitude']);
   }
 
   Map<String, dynamic> toJson() {
@@ -44,5 +44,10 @@ class Endereco {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     return data;
+  }
+
+  @override
+  String toString() {
+    return "$rua $complemento $numero";
   }
 }
