@@ -7,7 +7,9 @@ import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
 import 'package:flutter/material.dart';
 
 class MachineManagement extends StatefulWidget {
-  const MachineManagement({super.key, required this.machine});
+  const MachineManagement(
+      {super.key, required this.machine, required this.userId});
+  final int userId;
   final Maquina machine;
 
   @override
@@ -16,7 +18,7 @@ class MachineManagement extends StatefulWidget {
 
 class _MachineManagementState extends State<MachineManagement> {
   bool isNotification = true;
-  double notificationValue = 0;
+  double? notificationValue;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +98,7 @@ class _MachineManagementState extends State<MachineManagement> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
                   return LocationForm(
+                    userId: widget.userId,
                     machineId: widget.machine.id!,
                     maquina: widget.machine,
                   );
@@ -112,6 +115,7 @@ class _MachineManagementState extends State<MachineManagement> {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
                   return ValuesForm(
+                    userId: widget.userId,
                     machineId: widget.machine.id,
                     maquina: widget.machine,
                   );
@@ -180,7 +184,7 @@ class _MachineManagementState extends State<MachineManagement> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Slider(
-            value: notificationValue,
+            value: notificationValue ?? widget.machine.limiteMaximo!.toDouble(),
             max: 100,
             onChanged: (double value) {
               setState(() {
@@ -188,7 +192,8 @@ class _MachineManagementState extends State<MachineManagement> {
               });
             },
           ),
-          Text('${notificationValue.round().toString()}%')
+          Text(
+              '${notificationValue == null ? widget.machine.limiteMaximo!.toString() : notificationValue?.round().toString()}%')
         ],
       );
     }

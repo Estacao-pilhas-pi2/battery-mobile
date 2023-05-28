@@ -10,9 +10,11 @@ import 'package:geolocator/geolocator.dart';
 
 class LocationForm extends StatefulWidget {
   final int machineId;
+  final int userId;
   final Maquina? maquina;
 
-  const LocationForm({Key? key, required this.machineId, this.maquina})
+  const LocationForm(
+      {Key? key, required this.machineId, required this.userId, this.maquina})
       : super(key: key);
 
   @override
@@ -120,6 +122,7 @@ class _LocationFormState extends State<LocationForm> {
                 CustomTextField(
                   initialValue: widget.maquina?.endereco?.estado ?? "",
                   label: "Estado",
+                  maxLength: 2,
                   notEmpty: true,
                   onSave: (String? value) {
                     _estado = value;
@@ -171,8 +174,9 @@ class _LocationFormState extends State<LocationForm> {
           builder: (BuildContext qrCodeContext) {
             return ValuesForm(
                 machineId: widget.machineId,
+                userId: widget.userId,
                 bairro: _bairro,
-                cep: _cep,
+                cep: Masks().clearMask(_cep),
                 cidade: _cidade,
                 complemento: _complemento,
                 estado: _estado,

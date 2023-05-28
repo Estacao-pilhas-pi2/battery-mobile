@@ -4,17 +4,17 @@ class Maquina {
   int? id;
   Endereco? endereco;
   String? descricao;
-  String? precoAAA;
-  String? precoAA;
-  String? precoC;
-  String? precoD;
-  String? precoV9;
+  int? precoAAA;
+  int? precoAA;
+  int? precoC;
+  int? precoD;
+  int? precoV9;
   int? quantidadeAAA;
   int? quantidadeAA;
   int? quantidadeC;
   int? quantidadeD;
   int? quantidadeV9;
-  String? limiteMaximo;
+  int? limiteMaximo;
   int? estabelecimento;
 
   Maquina(
@@ -39,17 +39,17 @@ class Maquina {
     endereco =
         json['endereco'] != null ? Endereco.fromJson(json['endereco']) : null;
     descricao = json['descricao'];
-    precoAAA = json['preco_AAA'];
-    precoAA = json['preco_AA'];
-    precoC = json['preco_C'];
-    precoD = json['preco_D'];
-    precoV9 = json['preco_V9'];
+    precoAAA = double.parse(json['preco_AAA']).round();
+    precoAA = double.parse(json['preco_AA']).round();
+    precoC = double.parse(json['preco_C']).round();
+    precoD = double.parse(json['preco_D']).round();
+    precoV9 = double.parse(json['preco_V9']).round();
     quantidadeAAA = json['quantidade_AAA'];
     quantidadeAA = json['quantidade_AA'];
     quantidadeC = json['quantidade_C'];
     quantidadeD = json['quantidade_D'];
     quantidadeV9 = json['quantidade_V9'];
-    limiteMaximo = json['limite_maximo'];
+    limiteMaximo = double.parse(json['limite_maximo']).round();
     estabelecimento = json['estabelecimento'];
   }
 

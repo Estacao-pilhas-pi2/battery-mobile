@@ -1,9 +1,10 @@
+import 'package:estacao_pilhas/globals/secure_storage.dart';
 import 'package:estacao_pilhas/models/usuario.dart';
+import 'package:estacao_pilhas/pages/establishment_page/establishment_page.dart';
 import 'package:estacao_pilhas/pages/recycler_page/recycler_page.dart';
 import 'package:estacao_pilhas/pages/register/register.dart';
 import 'package:flutter/material.dart';
 import '../../components/simple_dialog.dart';
-import '../credits_received/credits_received.dart';
 import 'controllers/login_controller.dart';
 
 class Login extends StatelessWidget {
@@ -28,6 +29,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  SecureStorage secureStorage = SecureStorage();
   bool isLoading = false;
 
   Future submitLogin() async {
@@ -42,7 +44,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
         builder: (BuildContext qrCodeContext) {
           return response.estabelecimento!
-              ? const CreditsReceived(paymentId: "")
+              ? EstablishmentPage(
+                  userId: int.parse(response.identificador!),
+                )
               : const RecyclerPage();
         },
       ), (Route<dynamic> route) => false);

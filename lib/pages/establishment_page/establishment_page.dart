@@ -7,7 +7,8 @@ import 'package:estacao_pilhas/pages/qr_code_reader/qr_code_reader.dart';
 import 'package:flutter/material.dart';
 
 class EstablishmentPage extends StatefulWidget {
-  const EstablishmentPage({super.key});
+  const EstablishmentPage({super.key, required this.userId});
+  final int userId;
 
   @override
   State<EstablishmentPage> createState() => _EstablishmentPageState();
@@ -62,22 +63,7 @@ class _EstablishmentPageState extends State<EstablishmentPage> {
                       padding: const EdgeInsets.only(top: 25),
                       child: RoundedButton(
                         text: "Registrar Máquina",
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return QrCodeReader(
-                                displayText:
-                                    "Leia o Código QR localizado na parte X da máquina",
-                                onRead: (capture, qrCodeContext) {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) {
-                                    return LocationForm(
-                                        machineId: capture['id']);
-                                  }));
-                                  return true;
-                                });
-                          }));
-                        },
+                        onPressed: navigateToAddMachine,
                       ),
                     ),
                     const Padding(
@@ -92,7 +78,9 @@ class _EstablishmentPageState extends State<EstablishmentPage> {
                         shrinkWrap: true,
                         itemCount: machineList.length,
                         itemBuilder: (context, index) {
-                          return MachineCard(machine: machineList[index]);
+                          return MachineCard(
+                              userId: widget.userId,
+                              machine: machineList[index]);
                         },
                       ),
                     ),
@@ -102,5 +90,21 @@ class _EstablishmentPageState extends State<EstablishmentPage> {
               ),
       ),
     );
+  }
+
+  Future<void> navigateToAddMachine() async {
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return QrCodeReader(
+          displayText: "Leia o Código QR localizado na parte X da máquina",
+          onRead: (capture, qrCodeContext) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return LocationForm(
+                  machineId: capture['id'], userId: widget.userId);
+            }));
+            return true;
+          });
+    }));
+
+    initialRequest();
   }
 }

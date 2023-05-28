@@ -1,10 +1,11 @@
 import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
-import 'package:estacao_pilhas/pages/manage_machine/manage_machine_page.dart';
+import 'package:estacao_pilhas/pages/machine_management/machine_management.dart';
 import 'package:flutter/material.dart';
 
 class MachineCard extends StatelessWidget {
-  const MachineCard({super.key, required this.machine});
+  const MachineCard({super.key, required this.userId, required this.machine});
+  final int userId;
   final Maquina machine;
 
   IconData getBatteryIcon(currentValue) {
@@ -42,8 +43,9 @@ class MachineCard extends StatelessWidget {
         trailing: Text('${machine.getCurrentBatteries()}/100'),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return ManageMachine(
-              machineId: machine.id!,
+            return MachineManagement(
+              userId: userId,
+              machine: machine,
             );
           }));
         },
