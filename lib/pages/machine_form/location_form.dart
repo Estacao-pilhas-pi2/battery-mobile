@@ -1,18 +1,20 @@
-import 'dart:developer';
-
 import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
+import 'package:estacao_pilhas/utils/geolocator.dart';
 import 'package:estacao_pilhas/utils/input_masks.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class LocationForm extends StatefulWidget {
   final int machineId;
-  final Maquina? machine;
+  final int userId;
+  final Maquina? maquina;
 
-  const LocationForm({Key? key, required this.machineId, this.machine})
+  const LocationForm(
+      {Key? key, required this.machineId, required this.userId, this.maquina})
       : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class _LocationFormState extends State<LocationForm> {
   String? _cidade;
   String? _estado;
   String? _rua;
+  Position? _localizacao;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -36,14 +39,14 @@ class _LocationFormState extends State<LocationForm> {
   }
 
   void initialData() async {
-    if (widget.machine != null) {
-      _cep = widget.machine?.endereco?.cep;
-      _bairro = widget.machine?.endereco?.bairro;
-      _cidade = widget.machine?.endereco?.cidade;
-      _estado = widget.machine?.endereco?.estado;
-      _numero = widget.machine?.endereco?.numero;
-      _complemento = widget.machine?.endereco?.complemento;
-      _rua = widget.machine?.endereco?.rua;
+    if (widget.maquina != null) {
+      _cep = widget.maquina?.endereco?.cep;
+      _bairro = widget.maquina?.endereco?.bairro;
+      _cidade = widget.maquina?.endereco?.cidade;
+      _estado = widget.maquina?.endereco?.estado;
+      _numero = widget.maquina?.endereco?.numero;
+      _complemento = widget.maquina?.endereco?.complemento;
+      _rua = widget.maquina?.endereco?.rua;
     }
   }
 
@@ -52,20 +55,15 @@ class _LocationFormState extends State<LocationForm> {
     return SafeArea(
       child: BaseForm(
         appBarText: "Registrar Máquina",
-        children: Form(
+        child: Form(
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               children: [
-                const SizedBox(height: 25),
-                RoundedButton(
-                  onPressed: () => log("localização"),
-                  text: "Pegar Localização atual",
-                ),
-                const SizedBox(height: 25),
+                showMapPositionButton(),
                 CustomTextField(
-                  initialValue: widget.machine?.endereco?.cep ?? "",
+                  initialValue: widget.maquina?.endereco?.cep ?? "",
                   label: "CEP",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -76,7 +74,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine?.endereco?.bairro ?? "",
+                  initialValue: widget.maquina?.endereco?.bairro ?? "",
                   label: "Bairro",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -85,7 +83,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine?.endereco?.rua ?? "",
+                  initialValue: widget.maquina?.endereco?.rua ?? "",
                   label: "Rua",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -95,7 +93,7 @@ class _LocationFormState extends State<LocationForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue:
-                      widget.machine?.endereco?.numero.toString() ?? "",
+                      widget.maquina?.endereco?.numero.toString() ?? "",
                   label: "Número",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
@@ -105,7 +103,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine?.endereco?.complemento ?? "",
+                  initialValue: widget.maquina?.endereco?.complemento ?? "",
                   label: "Complemento",
                   onSave: (String? value) {
                     _complemento = value;
@@ -113,7 +111,7 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine?.endereco?.cidade ?? "",
+                  initialValue: widget.maquina?.endereco?.cidade ?? "",
                   label: "Cidade",
                   notEmpty: true,
                   onSave: (String? value) {
@@ -122,8 +120,9 @@ class _LocationFormState extends State<LocationForm> {
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.machine?.endereco?.estado ?? "",
+                  initialValue: widget.maquina?.endereco?.estado ?? "",
                   label: "Estado",
+                  maxLength: 2,
                   notEmpty: true,
                   onSave: (String? value) {
                     _estado = value;
@@ -132,7 +131,7 @@ class _LocationFormState extends State<LocationForm> {
                 const SizedBox(height: 25),
                 RoundedButton(
                   onPressed: submit,
-                  text: widget.machine != null ? "Salvar" : "Próximo",
+                  text: widget.maquina != null ? "Salvar" : "Próximo",
                 ),
                 const SizedBox(height: 10),
               ],
@@ -143,31 +142,53 @@ class _LocationFormState extends State<LocationForm> {
     );
   }
 
+  showMapPositionButton() {
+    if (widget.maquina?.endereco != null) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 25),
+        child: RoundedButton(
+          text: "Alterar posição no mapa",
+          onPressed: () async {
+            _localizacao = await getUserPosition();
+          },
+        ),
+      );
+    }
+
+    return const SizedBox(
+      height: 25,
+    );
+  }
+
   void submit() async {
     if (!_formKey.currentState!.validate()) {
       return null;
     }
     _formKey.currentState!.save();
 
-    if (widget.machine != null) {
-      Navigator.of(context).pop();
-      return;
-    }
+    if (widget.maquina == null) {
+      _localizacao = await getUserPosition();
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext qrCodeContext) {
-          return ValuesForm(
-              machineId: widget.machineId,
-              cep: _cep,
-              rua: _rua,
-              bairro: _bairro,
-              numero: _numero,
-              complemento: _complemento,
-              cidade: _cidade,
-              estado: _estado);
-        },
-      ),
-    );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext qrCodeContext) {
+            return ValuesForm(
+                machineId: widget.machineId,
+                userId: widget.userId,
+                bairro: _bairro,
+                cep: Masks().clearMask(_cep),
+                cidade: _cidade,
+                complemento: _complemento,
+                estado: _estado,
+                rua: _rua,
+                numero: _numero,
+                localizacao: _localizacao);
+          },
+        ),
+      );
+    } else {
+      debugPrint("TO-DO: Integrar com endpoint de patch");
+      Navigator.of(context).pop();
+    }
   }
 }

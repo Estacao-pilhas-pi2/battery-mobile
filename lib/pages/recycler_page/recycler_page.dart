@@ -1,4 +1,5 @@
 import 'package:estacao_pilhas/globals/colors.dart';
+import 'package:estacao_pilhas/utils/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -8,7 +9,6 @@ import 'package:latlong2/latlong.dart';
 import '../../models/usuario.dart';
 import '../credits_received/credits_received.dart';
 import '../qr_code_reader/qr_code_reader.dart';
-import 'components/location_error_dialog.dart';
 import 'controllers/recycler_page_controller.dart';
 
 class RecyclerPage extends StatefulWidget {
@@ -48,41 +48,6 @@ class _RecyclerPageState extends State<RecyclerPage> {
     }
   }
 
-  Future<Position> getUserPosition() async {
-    try {
-      bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
-
-      if (!isLocationEnabled) {
-        throw ("Para o correto funcionamento do aplicativo é necessário que sua localização esteja habilitada!");
-      }
-
-      LocationPermission locationPermission =
-          await Geolocator.checkPermission();
-      if (locationPermission == LocationPermission.denied) {
-        locationPermission = await Geolocator.requestPermission();
-        if (locationPermission == LocationPermission.denied) {
-          throw ("Para o correto funcionamento do aplicativo é necessário que sua localização esteja habilitada!");
-        }
-      }
-      if (locationPermission == LocationPermission.deniedForever) {
-        throw ("Acesse as configurações para habilitar a localização!");
-      }
-
-      return Geolocator.getCurrentPosition();
-    } catch (error) {
-      await _showLocationErrorDialog(error.toString());
-      return Position(
-          longitude: -47.9292,
-          latitude: -15.7801,
-          timestamp: DateTime.now(),
-          accuracy: 0,
-          altitude: 0,
-          heading: 0,
-          speed: 0,
-          speedAccuracy: 0);
-    }
-  }
-
   Future<void> initialRequest() async {
     List<Marker> requestedMarkerList =
         await RecyclerPageController().getStations();
@@ -98,16 +63,6 @@ class _RecyclerPageState extends State<RecyclerPage> {
       creditos = requestedCredits;
       isScreenLoading = false;
     });
-  }
-
-  Future<void> _showLocationErrorDialog(String error) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return LocationErrorDialog(error);
-      },
-    );
   }
 
   @override

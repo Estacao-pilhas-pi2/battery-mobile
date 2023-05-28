@@ -5,6 +5,7 @@ class Usuario {
   String? email;
   String? nome;
   bool? estabelecimento;
+  String? identificador;
 
   Usuario(
       {this.refresh,
@@ -21,6 +22,7 @@ class Usuario {
     email = json['email'];
     nome = json['nome'];
     estabelecimento = json['estabelecimento'];
+    identificador = json['identificador'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +33,7 @@ class Usuario {
     data['email'] = email;
     data['nome'] = nome;
     data['estabelecimento'] = estabelecimento;
+    data['identificador'] = identificador;
     return data;
   }
 }
