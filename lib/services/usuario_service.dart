@@ -22,7 +22,7 @@ class UsuarioService {
       final response = await http.post(url, body: {
         "email": email,
         "password": password
-      }).timeout(const Duration(seconds: 10));
+      }).timeout(Duration(seconds: Utils.defaultTimeout));
 
       if (response.statusCode == 200) {
         return Usuario.fromJson(jsonDecode(response.body));
@@ -64,7 +64,7 @@ class UsuarioService {
           .post(url,
               headers: {'Content-Type': 'application/json'},
               body: jsonEncode(body))
-          .timeout(const Duration(seconds: 10));
+          .timeout(Duration(seconds: Utils.defaultTimeout));
       if (response.statusCode == 201) {
         return true;
       } else {
@@ -101,7 +101,8 @@ class UsuarioService {
     final url = Uri.parse("${Utils.url}$recicladorEndpoint$id/");
 
     try {
-      final response = await http.get(url).timeout(const Duration(seconds: 10));
+      final response =
+          await http.get(url).timeout(Duration(seconds: Utils.defaultTimeout));
 
       if (response.statusCode == 200) {
         return Reciclador.fromJson(jsonDecode(response.body));
