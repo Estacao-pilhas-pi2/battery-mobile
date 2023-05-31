@@ -5,6 +5,7 @@ import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
 import 'package:estacao_pilhas/utils/geolocator.dart';
 import 'package:estacao_pilhas/utils/input_masks.dart';
+import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -30,6 +31,7 @@ class _LocationFormState extends State<LocationForm> {
   String? _estado;
   String? _rua;
   Position? _localizacao;
+  bool locationAltered = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -145,10 +147,11 @@ class _LocationFormState extends State<LocationForm> {
   showMapPositionButton() {
     if (widget.maquina?.endereco != null) {
       return Padding(
-        padding: EdgeInsets.symmetric(vertical: 25),
+        padding: const EdgeInsets.symmetric(vertical: 25),
         child: RoundedButton(
           text: "Alterar posição no mapa",
           onPressed: () async {
+            locationAltered = true;
             _localizacao = await getUserPosition();
           },
         ),
@@ -187,7 +190,27 @@ class _LocationFormState extends State<LocationForm> {
         ),
       );
     } else {
-      debugPrint("TO-DO: Integrar com endpoint de patch");
+      Map<String, dynamic> location = {
+        "endereco": {
+          "cep": Masks().clearMask(_cep),
+          "estado": _estado,
+          "cidade": _cidade,
+          "bairro": _bairro,
+          "rua": _rua,
+          "numero": _numero,
+          "complemento": _complemento,
+          "latitude": widget.maquina?.endereco?.latitude,
+          "longitude": widget.maquina?.endereco?.longitude,
+        }
+      };
+      if (locationAltered) {
+        location["endereco"]["latitude"] = _localizacao!.latitude;
+        location["endereco"]["longitude"] = _localizacao!.longitude;
+      }
+
+      await MachineManagementController()
+          .editMachine(widget.machineId, location);
+      //debugPrint("TO-DO: Integrar com endpoint de patch");
       Navigator.of(context).pop();
     }
   }
