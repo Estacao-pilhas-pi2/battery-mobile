@@ -1,12 +1,16 @@
 import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
-import 'package:estacao_pilhas/pages/machine_management/machine_management.dart';
 import 'package:flutter/material.dart';
 
 class MachineCard extends StatelessWidget {
-  const MachineCard({super.key, required this.userId, required this.machine});
+  const MachineCard(
+      {super.key,
+      required this.userId,
+      required this.machine,
+      required this.onTap});
   final int userId;
   final Maquina machine;
+  final Function(int, Maquina) onTap;
 
   IconData getBatteryIcon(currentValue) {
     if (currentValue == 0) {
@@ -30,26 +34,20 @@ class MachineCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        leading: Icon(
-          getBatteryIcon(machine.getCurrentBatteries()),
-          size: 50,
-          color: StaticColors.onSecondary,
-        ),
-        title: Text('Máquina: ${machine.id}'),
-        subtitle: Text(machine.endereco.toString()),
-        isThreeLine: true,
-        tileColor: StaticColors.secondary,
-        trailing: Text('${machine.getCurrentBatteries()}/100'),
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return MachineManagement(
-              userId: userId,
-              machine: machine,
-            );
-          }));
-        },
+        child: ListTile(
+      leading: Icon(
+        getBatteryIcon(machine.getCurrentBatteries()),
+        size: 50,
+        color: StaticColors.onSecondary,
       ),
-    );
+      title: Text('Máquina: ${machine.id}'),
+      subtitle: Text(machine.endereco.toString()),
+      isThreeLine: true,
+      tileColor: StaticColors.secondary,
+      trailing: Text('${machine.getCurrentBatteries()}/100'),
+      onTap: () {
+        onTap(userId, machine);
+      },
+    ));
   }
 }
