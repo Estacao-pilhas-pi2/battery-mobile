@@ -44,7 +44,7 @@ class RecyclerPageController {
     Usuario usuario = await UsuarioService().getUserInfo();
 
     Reciclador requestedCredits =
-        await UsuarioService().getCredits(usuario.id!);
+        await UsuarioService().getCredits(usuario.identificador!);
 
     return requestedCredits.credito!;
   }

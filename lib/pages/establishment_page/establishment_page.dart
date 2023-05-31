@@ -6,6 +6,8 @@ import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
 import 'package:estacao_pilhas/pages/qr_code_reader/qr_code_reader.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/usuario.dart';
+
 class EstablishmentPage extends StatefulWidget {
   const EstablishmentPage({super.key, required this.userId});
   final int userId;
@@ -15,17 +17,18 @@ class EstablishmentPage extends StatefulWidget {
 }
 
 class _EstablishmentPageState extends State<EstablishmentPage> {
-  late String username = "";
+  late Usuario user = Usuario();
   bool isScreenLoading = true;
   List<Maquina> machineList = [];
 
   Future<void> initialRequest() async {
     List<Maquina> requestedMachineList =
         await EstablishmentPageController().getMachines();
+    Usuario requestedUser = await EstablishmentPageController().getUserInfo();
 
     setState(() {
       machineList = requestedMachineList;
-      username = "Usuário";
+      user = requestedUser;
       isScreenLoading = false;
     });
   }
@@ -54,7 +57,7 @@ class _EstablishmentPageState extends State<EstablishmentPage> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 28),
                         child: Text(
-                          "Bem vindo(a) $username",
+                          "Bem vindo(a) ${user.nome}",
                           style: const TextStyle(fontSize: 20),
                         ),
                       ),
