@@ -10,8 +10,11 @@ import '../models/maquina.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../models/payment.dart';
+
 class MaquinaService {
   static String listMaquinaEndpoint = "/api/maquina/";
+  static String makePaymentEndpoint = "/api/pagamento/efetuar/";
   static String createMaquinaEndpoint = "/api/maquina/{id}/";
 
   Future<List<Maquina>> getMaquinaList() async {
@@ -22,12 +25,37 @@ class MaquinaService {
     try {
       final response = await http.get(url, headers: {
         'Authorization': 'Bearer ${user.access}'
-      }).timeout(const Duration(seconds: 10));
+      }).timeout(Duration(seconds: Utils.defaultTimeout));
 
       if (response.statusCode == 200) {
         return Maquina.fromJsonList(jsonDecode(response.body));
       } else {
-        throw const HttpException('Dados incorretos.');
+        throw HttpException('E ${response.statusCode}');
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informaçoes');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
+
+  Future<Payment> makePayment(String paymentId) async {
+    final url = Uri.parse(Utils.url + makePaymentEndpoint);
+    Usuario user = await UsuarioService().getUserInfo();
+    Object body = {"id_pagamento": paymentId};
+
+    try {
+      final response = await http
+          .post(url,
+              headers: {'Authorization': 'Bearer ${user.access}'}, body: body)
+          .timeout(Duration(seconds: Utils.defaultTimeout));
+
+      if (response.statusCode == 201) {
+        return Payment.fromJson(jsonDecode(response.body));
+      } else {
+        throw HttpException('Erro: ${response.statusCode}');
       }
     } catch (error) {
       if (error is TimeoutException) {
