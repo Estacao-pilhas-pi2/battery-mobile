@@ -4,7 +4,7 @@ class Payment {
   int? quantidadePilhaC;
   int? quantidadePilhaD;
   int? quantidadePilhaV9;
-  String? creditos;
+  double? valorTotal;
 
   Payment(
       {this.quantidadePilhaAA,
@@ -12,7 +12,7 @@ class Payment {
       this.quantidadePilhaC,
       this.quantidadePilhaD,
       this.quantidadePilhaV9,
-      this.creditos});
+      this.valorTotal});
 
   Payment.fromJson(Map<String, dynamic> json) {
     quantidadePilhaAA = json['quantidade_pilha_AA'];
@@ -20,7 +20,7 @@ class Payment {
     quantidadePilhaC = json['quantidade_pilha_C'];
     quantidadePilhaD = json['quantidade_pilha_D'];
     quantidadePilhaV9 = json['quantidade_pilha_V9'];
-    creditos = json['creditos'];
+    valorTotal = json['valor_total'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,7 +30,7 @@ class Payment {
     data['quantidade_pilha_C'] = quantidadePilhaC;
     data['quantidade_pilha_D'] = quantidadePilhaD;
     data['quantidade_pilha_V9'] = quantidadePilhaV9;
-    data['creditos'] = creditos;
+    data['valor_total'] = valorTotal;
     return data;
   }
 }

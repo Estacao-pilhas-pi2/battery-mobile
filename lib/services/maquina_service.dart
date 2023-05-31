@@ -29,7 +29,7 @@ class MaquinaService {
       if (response.statusCode == 200) {
         return Maquina.fromJsonList(jsonDecode(response.body));
       } else {
-        throw const HttpException('Dados incorretos.');
+        throw HttpException('E ${response.statusCode}');
       }
     } catch (error) {
       if (error is TimeoutException) {
@@ -43,15 +43,15 @@ class MaquinaService {
   Future<Payment> makePayment(String paymentId) async {
     final url = Uri.parse(Utils.url + makePaymentEndpoint);
     Usuario user = await UsuarioService().getUserInfo();
+    Object body = {"id_pagamento": paymentId};
 
     try {
-      final response = await http.post(url, headers: {
-        'Authorization': 'Bearer ${user.access}'
-      }, body: {
-        {"id_pagamento": paymentId}
-      }).timeout(Duration(seconds: Utils.defaultTimeout));
+      final response = await http
+          .post(url,
+              headers: {'Authorization': 'Bearer ${user.access}'}, body: body)
+          .timeout(Duration(seconds: Utils.defaultTimeout));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return Payment.fromJson(jsonDecode(response.body));
       } else {
         throw HttpException('Erro: ${response.statusCode}');

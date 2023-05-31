@@ -151,7 +151,7 @@ class _CreditsReceivedState extends State<CreditsReceived> {
                                                 ),
                                                 const SizedBox(width: 15),
                                                 Text(
-                                                  "${payment.creditos!} Créditos",
+                                                  "${payment.valorTotal!} Créditos",
                                                   style: const TextStyle(
                                                       fontSize: 18),
                                                 ),
