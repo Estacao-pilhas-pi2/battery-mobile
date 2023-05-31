@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class BaseForm extends StatelessWidget {
   final appBarText;
-  final children;
-  const BaseForm({super.key, this.appBarText, this.children});
+  final child;
+  const BaseForm({super.key, required this.appBarText, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class BaseForm extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                   minHeight: size.height - appBar.preferredSize.height),
-              child: Column(children: [children]),
+              child: child,
             ),
           );
         },

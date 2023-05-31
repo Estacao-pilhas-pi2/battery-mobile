@@ -1,12 +1,16 @@
 import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
+import 'package:estacao_pilhas/models/endereco.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/pages/machine_form/controllers/machine_form_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ValuesForm extends StatefulWidget {
   const ValuesForm(
       {Key? key,
+      required this.userId,
       this.machineId,
       this.cep,
       this.rua,
@@ -15,10 +19,12 @@ class ValuesForm extends StatefulWidget {
       this.complemento,
       this.cidade,
       this.estado,
+      this.localizacao,
       this.maquina})
       : super(key: key);
 
   final int? machineId;
+  final int userId;
   final String? cep;
   final String? rua;
   final String? bairro;
@@ -26,6 +32,7 @@ class ValuesForm extends StatefulWidget {
   final String? complemento;
   final String? cidade;
   final String? estado;
+  final Position? localizacao;
   final Maquina? maquina;
 
   @override
@@ -33,11 +40,11 @@ class ValuesForm extends StatefulWidget {
 }
 
 class _ValuesFormState extends State<ValuesForm> {
-  String? _9v;
-  String? _AAA;
-  String? _AA;
-  String? _C;
-  String? _D;
+  int? _9v;
+  int? _AAA;
+  int? _AA;
+  int? _C;
+  int? _D;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -60,7 +67,7 @@ class _ValuesFormState extends State<ValuesForm> {
     return SafeArea(
       child: BaseForm(
         appBarText: "Registrar Máquina",
-        children: Form(
+        child: Form(
           key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -68,52 +75,52 @@ class _ValuesFormState extends State<ValuesForm> {
               children: [
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.maquina?.precoV9 ?? "",
+                  initialValue: widget.maquina?.precoV9.toString() ?? "",
                   label: "Créditos por pilha 9V",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _9v = value;
+                    _9v = int.parse(value);
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.maquina?.precoAAA ?? "",
+                  initialValue: widget.maquina?.precoAAA.toString() ?? "",
                   label: "Créditos por pilha AAA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _AAA = value;
+                    _AAA = int.parse(value);
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.maquina?.precoAA ?? "",
+                  initialValue: widget.maquina?.precoAA.toString() ?? "",
                   label: "Créditos por pilha AA",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _AA = value;
+                    _AA = int.parse(value);
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.maquina?.precoC ?? "",
+                  initialValue: widget.maquina?.precoC.toString() ?? "",
                   label: "Créditos por pilha C",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _C = value;
+                    _C = int.parse(value);
                   },
                 ),
                 const SizedBox(height: 25),
                 CustomTextField(
-                  initialValue: widget.maquina?.precoD ?? "",
+                  initialValue: widget.maquina?.precoD.toString() ?? "",
                   label: "Créditos por pilha D",
                   notEmpty: true,
                   keyboardType: TextInputType.number,
                   onSave: (String value) {
-                    _D = value;
+                    _D = int.parse(value);
                   },
                 ),
                 const SizedBox(height: 25),
@@ -136,22 +143,33 @@ class _ValuesFormState extends State<ValuesForm> {
     }
     _formKey.currentState!.save();
 
-    if (widget.maquina != null) {
-      Navigator.of(context).pop();
-      return;
-    }
+    if (widget.maquina == null) {
+      Endereco endereco = Endereco(
+          bairro: widget.bairro,
+          cep: widget.cep,
+          cidade: widget.cidade,
+          complemento: widget.complemento,
+          estado: widget.estado,
+          numero: widget.numero,
+          rua: widget.rua,
+          latitude: widget.localizacao!.latitude,
+          longitude: widget.localizacao!.longitude);
+      Maquina maquina = Maquina(
+          estabelecimento: widget.userId,
+          endereco: endereco,
+          precoAA: _AA,
+          precoAAA: _AAA,
+          precoC: _C,
+          precoD: _D,
+          precoV9: _9v,
+          limiteMaximo: 100);
 
-    debugPrint('cep : ${widget.cep}');
-    debugPrint('descricao : ${widget.rua}');
-    debugPrint('bairro : ${widget.bairro}');
-    debugPrint('número : ${widget.numero}');
-    debugPrint('complemento : ${widget.complemento}');
-    debugPrint('cidade : ${widget.cidade}');
-    debugPrint('estado : ${widget.estado}');
-    debugPrint('9V : $_9v');
-    debugPrint('AAA : $_AAA');
-    debugPrint('AA : $_AA');
-    debugPrint('C : $_C');
-    debugPrint('D : $_D');
+      await MachineFormController().createMachine(widget.machineId!, maquina);
+
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    } else {
+      debugPrint("TO-DO: Integrar com endpoint de patch");
+      Navigator.of(context).pop();
+    }
   }
 }
