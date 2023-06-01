@@ -16,6 +16,7 @@ class MaquinaService {
   static String listMaquinaEndpoint = "/api/maquina/";
   static String makePaymentEndpoint = "/api/pagamento/efetuar/";
   static String createMaquinaEndpoint = "/api/maquina/{id}/";
+  static String emptyMaquinaEndpoint = "/api/maquina/esvaziar/";
 
   Future<List<Maquina>> getMaquinaList() async {
     final url = Uri.parse(Utils.url + listMaquinaEndpoint);
@@ -66,6 +67,59 @@ class MaquinaService {
     }
   }
 
+  Future editMaquina(int id, Map changes) async {
+    final url = Uri.parse(
+        Utils.url + createMaquinaEndpoint.replaceFirst("{id}", id.toString()));
+
+    Usuario user = await UsuarioService().getUserInfo();
+
+    try {
+      final response = await http.patch(url,
+          body: jsonEncode(changes),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${user.access}'
+          }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        //return Maquina.fromJson(jsonDecode(response.body)); //alterar
+      } else {
+        throw const HttpException('Ocorreu um erro.');
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informações');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
+
+  Future emptyMaquina(Map id) async {
+    final url = Uri.parse(Utils.url + emptyMaquinaEndpoint);
+
+    Usuario user = await UsuarioService().getUserInfo();
+
+    try {
+      final response = await http.post(url, body: jsonEncode(id), headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.access}'
+      }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        return response.body; //alterar
+      } else {
+        throw const HttpException('Ocorreu um erro.');
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informações');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
+
   Future<Maquina> createMaquina(int id, Maquina maquina) async {
     final url = Uri.parse(
         Utils.url + createMaquinaEndpoint.replaceFirst("{id}", id.toString()));
@@ -85,7 +139,7 @@ class MaquinaService {
       }
     } catch (error) {
       if (error is TimeoutException) {
-        throw const HttpException('Ocorreu um erro ao carregar as informaçoes');
+        throw const HttpException('Ocorreu um erro ao carregar as informações');
       } else {
         throw HttpException('$error');
       }

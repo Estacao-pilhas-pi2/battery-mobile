@@ -4,6 +4,7 @@ import 'package:estacao_pilhas/components/text_field.dart';
 import 'package:estacao_pilhas/models/endereco.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/machine_form/controllers/machine_form_controller.dart';
+import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -163,12 +164,19 @@ class _ValuesFormState extends State<ValuesForm> {
           precoD: _D,
           precoV9: _9v,
           limiteMaximo: 100);
-
       await MachineFormController().createMachine(widget.machineId!, maquina);
-
       Navigator.of(context).popUntil((route) => route.isFirst);
     } else {
-      debugPrint("TO-DO: Integrar com endpoint de patch");
+      Map<String, int> credits = {
+        "preco_AAA": _AAA!,
+        "preco_AA": _AA!,
+        "preco_C": _C!,
+        "preco_D": _D!,
+        "preco_V9": _9v!,
+      };
+      await MachineManagementController()
+          .editMachine(widget.machineId!, credits);
+      // debugPrint("TO-DO: Integrar com endpoint de patch");
       Navigator.of(context).pop();
     }
   }

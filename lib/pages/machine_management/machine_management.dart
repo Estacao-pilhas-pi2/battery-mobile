@@ -4,6 +4,7 @@ import 'package:estacao_pilhas/globals/colors.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
 import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
+import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
 import 'package:flutter/material.dart';
 
 class MachineManagement extends StatefulWidget {
@@ -46,7 +47,7 @@ class _MachineManagementState extends State<MachineManagement> {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(top: 25.0),
+                    padding: const EdgeInsets.only(top: 25.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -128,9 +129,7 @@ class _MachineManagementState extends State<MachineManagement> {
             RoundedButton(
               text: "Esvaziar Máquina",
               backgroundColor: StaticColors.onPrimary,
-              onPressed: () {
-                debugPrint("TO-DO: Integrar com endpoint de esvaziar máquina");
-              },
+              onPressed: emptyMachine,
             ),
             const SizedBox(
               height: 50,
@@ -138,7 +137,7 @@ class _MachineManagementState extends State<MachineManagement> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("Notificar sobre capacidade"),
+                const Text("Notificar sobre capacidade"),
                 Switch(
                   value: isNotification,
                   activeColor: StaticColors.primary,
@@ -165,17 +164,26 @@ class _MachineManagementState extends State<MachineManagement> {
               height: 25,
             ),
             RoundedButton(
-              text: "Excluir",
-              backgroundColor: StaticColors.onPrimary,
-              onPressed: () {
-                debugPrint("TO-DO: Integrar com endpoint de excluir");
-                Navigator.of(context).pop();
-              },
-            ),
+                text: "Excluir",
+                backgroundColor: StaticColors.onPrimary,
+                onPressed: () {
+                  deleteMachine();
+                  Navigator.of(context).pop();
+                }),
           ],
         ),
       ),
     );
+  }
+
+  void deleteMachine() async {
+    Map<String, void> delete = {"estabelecimento": null};
+    await MachineManagementController().editMachine(widget.machine.id!, delete);
+  }
+
+  void emptyMachine() async {
+    Map<String, int> id = {"id": widget.machine.id!};
+    await MachineManagementController().emptyMachine(id);
   }
 
   showNotificationSlider() {
