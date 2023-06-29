@@ -1,3 +1,4 @@
+import 'package:estacao_pilhas/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -11,6 +12,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  NotificationService notificationService = NotificationService();
+  FirebaseService firebaseService = FirebaseService(notificationService);
+  await firebaseService.initialize();
 
   runApp(const MyApp());
 }

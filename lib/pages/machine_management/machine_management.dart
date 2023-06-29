@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/globals/colors.dart';
@@ -21,7 +19,7 @@ class MachineManagement extends StatefulWidget {
 }
 
 class _MachineManagementState extends State<MachineManagement> {
-  bool isNotificationEnabled = true;
+  bool isNotificationEnabled = false;
   double notificationValue = 0;
 
   @override
@@ -43,6 +41,9 @@ class _MachineManagementState extends State<MachineManagement> {
   void setNotification() async {
     bool requestNotificationPermissions = await MachineManagementController()
         .setNotification(isNotificationEnabled);
+
+    if (requestNotificationPermissions) setNotificationValue();
+
     setState(() {
       isNotificationEnabled = requestNotificationPermissions;
     });
@@ -50,8 +51,6 @@ class _MachineManagementState extends State<MachineManagement> {
 
   void setNotificationValue() async {
     final registrationId = await FirebaseMessaging.instance.getToken();
-
-    log(registrationId.toString());
 
     MachineManagementController()
         .registerNotification(registrationId!, "android");
