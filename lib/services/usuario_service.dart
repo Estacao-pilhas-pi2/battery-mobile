@@ -14,6 +14,7 @@ class UsuarioService {
   static String loginEndpoint = "/api/login/";
   static String registerEstabelecimento = "/api/estabelecimento/";
   static String recicladorEndpoint = "/api/reciclador/";
+  static String registerNotificationEndpoint = "/api/estabelecimento/celular/";
 
   Future<Usuario> login(String email, String password) async {
     final url = Uri.parse(Utils.url + loginEndpoint);
@@ -112,6 +113,33 @@ class UsuarioService {
     } catch (error) {
       if (error is TimeoutException) {
         throw const HttpException('Ocorreu um erro ao carregar as informaçoes');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
+
+  Future<bool> registerNotification(String registrationId, String type) async {
+    final url = Uri.parse(Utils.url + registerNotificationEndpoint);
+
+    Usuario user = await UsuarioService().getUserInfo();
+
+    Object? body = {"registration_id": registrationId, "type": type};
+
+    try {
+      final response = await http.post(url, body: jsonEncode(body), headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.access}'
+      }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw const HttpException('Ocorreu um erro.');
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informações');
       } else {
         throw HttpException('$error');
       }

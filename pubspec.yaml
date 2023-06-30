@@ -45,6 +45,12 @@ dependencies:
   cpf_cnpj_validator: 2.0.0-nullsafety
   http: ^0.13.6
   flutter_secure_storage: ^8.0.0
+  firebase_core: ^2.14.0
+  firebase_messaging: ^14.6.1
+  notification_permissions: ^0.6.1
+  system_settings: ^2.1.0
+  firebase_analytics: ^10.4.3
+  flutter_local_notifications: ^14.1.1
 
 dev_dependencies:
   flutter_test:

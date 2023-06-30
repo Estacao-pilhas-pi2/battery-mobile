@@ -15,17 +15,17 @@ class MachineCard extends StatelessWidget {
   IconData getBatteryIcon(currentValue) {
     if (currentValue == 0) {
       return Icons.battery_0_bar_rounded;
-    } else if (currentValue < 10) {
+    } else if (currentValue < 15) {
       return Icons.battery_1_bar_rounded;
-    } else if (currentValue < 25) {
+    } else if (currentValue < 35) {
       return Icons.battery_2_bar_rounded;
-    } else if (currentValue < 40) {
+    } else if (currentValue < 55) {
       return Icons.battery_3_bar_rounded;
-    } else if (currentValue < 50) {
-      return Icons.battery_4_bar_rounded;
     } else if (currentValue < 75) {
-      return Icons.battery_5_bar_rounded;
+      return Icons.battery_4_bar_rounded;
     } else if (currentValue < 90) {
+      return Icons.battery_5_bar_rounded;
+    } else if (currentValue < 120) {
       return Icons.battery_6_bar_rounded;
     }
     return Icons.battery_alert_rounded;
@@ -44,7 +44,7 @@ class MachineCard extends StatelessWidget {
       subtitle: Text(machine.endereco.toString()),
       isThreeLine: true,
       tileColor: StaticColors.secondary,
-      trailing: Text('${machine.getCurrentBatteries()}/100'),
+      trailing: Text('${machine.getCurrentBatteries()}/185'),
       onTap: () {
         onTap(userId, machine);
       },

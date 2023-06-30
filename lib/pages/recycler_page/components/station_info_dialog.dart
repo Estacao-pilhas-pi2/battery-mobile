@@ -56,7 +56,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Center(child: Text(widget.station.precoAA.toString())),
-                      Center(child: Text("${widget.station.quantidadeAA}/100")),
+                      Center(child: Text("${widget.station.quantidadeAA}/50")),
                     ],
                   ),
                   TableRow(
@@ -66,8 +66,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Center(child: Text(widget.station.precoAAA.toString())),
-                      Center(
-                          child: Text("${widget.station.quantidadeAAA}/100")),
+                      Center(child: Text("${widget.station.quantidadeAAA}/55")),
                     ],
                   ),
                   TableRow(
@@ -77,7 +76,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Center(child: Text(widget.station.precoC.toString())),
-                      Center(child: Text("${widget.station.quantidadeC}/100")),
+                      Center(child: Text("${widget.station.quantidadeC}/40")),
                     ],
                   ),
                   TableRow(
@@ -87,7 +86,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Center(child: Text(widget.station.precoD.toString())),
-                      Center(child: Text("${widget.station.quantidadeD}/100")),
+                      Center(child: Text("${widget.station.quantidadeD}/20")),
                     ],
                   ),
                   TableRow(
@@ -97,7 +96,7 @@ class _StationInfoDialogState extends State<StationInfoDialog> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Center(child: Text(widget.station.precoV9.toString())),
-                      Center(child: Text("${widget.station.quantidadeV9}/100")),
+                      Center(child: Text("${widget.station.quantidadeV9}/20")),
                     ],
                   ),
                 ],

@@ -5,6 +5,7 @@ import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
 import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
 import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class MachineManagement extends StatefulWidget {
@@ -18,8 +19,47 @@ class MachineManagement extends StatefulWidget {
 }
 
 class _MachineManagementState extends State<MachineManagement> {
-  bool isNotification = true;
-  double? notificationValue;
+  bool isNotificationEnabled = false;
+  double notificationValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    notificationRequest();
+  }
+
+  void notificationRequest() async {
+    bool notificationStatus =
+        await MachineManagementController().getNotificationStatus();
+    setState(() {
+      notificationValue = double.parse(widget.machine.limiteMaximo.toString());
+      isNotificationEnabled = notificationStatus;
+    });
+  }
+
+  void setNotification() async {
+    bool requestNotificationPermissions = await MachineManagementController()
+        .setNotification(isNotificationEnabled);
+
+    if (requestNotificationPermissions) setNotificationValue();
+
+    setState(() {
+      isNotificationEnabled = requestNotificationPermissions;
+    });
+  }
+
+  void setNotificationValue() async {
+    final registrationId = await FirebaseMessaging.instance.getToken();
+
+    MachineManagementController()
+        .registerNotification(registrationId!, "android");
+    Map<String, double> limit = {
+      "limite_maximo": notificationValue.roundToDouble()
+    };
+
+    MachineManagementController().editMachine(widget.machine.id!, limit);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +94,15 @@ class _MachineManagementState extends State<MachineManagement> {
                         Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('AAA: ${widget.machine.quantidadeAAA}/100'),
-                              Text('AA: ${widget.machine.quantidadeAA}/100'),
-                              Text('C: ${widget.machine.quantidadeC}/100'),
+                              Text('AAA: ${widget.machine.quantidadeAAA}/55'),
+                              Text('AA: ${widget.machine.quantidadeAA}/50'),
+                              Text('C: ${widget.machine.quantidadeC}/40'),
                             ]),
                         Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('9V: ${widget.machine.quantidadeV9}/100'),
-                              Text('D: ${widget.machine.quantidadeD}/100'),
+                              Text('9V: ${widget.machine.quantidadeV9}/20'),
+                              Text('D: ${widget.machine.quantidadeD}/20'),
                             ]),
                       ],
                     ),
@@ -139,29 +179,17 @@ class _MachineManagementState extends State<MachineManagement> {
               children: [
                 const Text("Notificar sobre capacidade"),
                 Switch(
-                  value: isNotification,
+                  value: isNotificationEnabled,
                   activeColor: StaticColors.primary,
                   onChanged: (bool value) {
-                    setState(() {
-                      isNotification = value;
-                    });
+                    setNotification();
                   },
                 )
               ],
             ),
             showNotificationSlider(),
             const SizedBox(
-              height: 25,
-            ),
-            RoundedButton(
-              text: "Salvar",
-              onPressed: () {
-                debugPrint("TO-DO: Integrar com endpoint de patch");
-                Navigator.of(context).pop();
-              },
-            ),
-            const SizedBox(
-              height: 25,
+              height: 50,
             ),
             RoundedButton(
                 text: "Excluir",
@@ -187,21 +215,23 @@ class _MachineManagementState extends State<MachineManagement> {
   }
 
   showNotificationSlider() {
-    if (isNotification) {
+    if (isNotificationEnabled) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Slider(
-            value: notificationValue ?? widget.machine.limiteMaximo!.toDouble(),
+            value: notificationValue,
             max: 100,
+            onChangeEnd: (value) {
+              setNotificationValue();
+            },
             onChanged: (double value) {
               setState(() {
                 notificationValue = value;
               });
             },
           ),
-          Text(
-              '${notificationValue == null ? widget.machine.limiteMaximo!.toString() : notificationValue?.round().toString()}%')
+          Text('${notificationValue.round().toString()}%')
         ],
       );
     }

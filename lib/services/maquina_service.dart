@@ -82,7 +82,7 @@ class MaquinaService {
           }).timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        //return Maquina.fromJson(jsonDecode(response.body)); //alterar
+        return Maquina.fromJson(jsonDecode(response.body));
       } else {
         throw const HttpException('Ocorreu um erro.');
       }
