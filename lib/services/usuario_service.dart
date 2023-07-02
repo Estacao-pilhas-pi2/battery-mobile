@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:estacao_pilhas/models/payment_report.dart';
 import 'package:http/http.dart' as http;
 
 import '../globals/secure_storage.dart';
@@ -15,6 +16,7 @@ class UsuarioService {
   static String registerEstabelecimento = "/api/estabelecimento/";
   static String recicladorEndpoint = "/api/reciclador/";
   static String registerNotificationEndpoint = "/api/estabelecimento/celular/";
+  static String paymentReportsEndpoint = "/api/pagamento";
 
   Future<Usuario> login(String email, String password) async {
     final url = Uri.parse(Utils.url + loginEndpoint);
@@ -134,6 +136,31 @@ class UsuarioService {
 
       if (response.statusCode == 200) {
         return true;
+      } else {
+        throw const HttpException('Ocorreu um erro.');
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informações');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
+
+  Future<List<PaymentReport>> getPaymentReports() async {
+    final url = Uri.parse(Utils.url + paymentReportsEndpoint);
+
+    Usuario user = await UsuarioService().getUserInfo();
+
+    try {
+      final response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.access}'
+      }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        return PaymentReport.fromJsonList(jsonDecode(response.body));
       } else {
         throw const HttpException('Ocorreu um erro.');
       }

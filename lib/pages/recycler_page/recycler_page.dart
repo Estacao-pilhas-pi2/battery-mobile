@@ -1,4 +1,5 @@
 import 'package:estacao_pilhas/globals/colors.dart';
+import 'package:estacao_pilhas/pages/payment_history/payment_history.dart';
 import 'package:estacao_pilhas/utils/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -88,38 +89,48 @@ class _RecyclerPageState extends State<RecyclerPage> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25),
-                    child: Container(
-                      width: deviceSize.width,
-                      height: 70,
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Créditos disponíveis",
-                                style: TextStyle(
-                                    color: StaticColors.onPrimary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              const Spacer(),
-                              Text(
-                                "$creditos Créditos",
-                                style: TextStyle(
-                                    color: StaticColors.onPrimary,
-                                    fontSize: 18),
-                              )
-                            ]),
-                      ),
+                  Container(
+                    width: deviceSize.width,
+                    height: 70,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Créditos disponíveis",
+                              style: TextStyle(
+                                  color: StaticColors.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            const Spacer(),
+                            Text(
+                              "$creditos Créditos",
+                              style: TextStyle(
+                                  color: StaticColors.onPrimary, fontSize: 18),
+                            )
+                          ]),
                     ),
                   ),
+                  Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (context) {
+                          return const PaymentHistory();
+                        }));
+                      },
+                      child: const Text(
+                        "Ver histórico",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ]),
                   SizedBox(
                     height: deviceSize.height * 0.5,
                     child: FlutterMap(

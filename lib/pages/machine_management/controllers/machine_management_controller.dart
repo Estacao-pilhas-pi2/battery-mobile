@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:estacao_pilhas/services/usuario_service.dart';

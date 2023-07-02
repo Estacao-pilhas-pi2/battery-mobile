@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Utils {
   // static String url = "http://localhost:8000"; // endereço padrao
   static String url =
@@ -5,4 +7,11 @@ class Utils {
   static String userKey = "userKey";
   static String isNotificationEnabled = "isNotificationEnabled";
   static int defaultTimeout = 10;
+
+  static String formatData(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    String formatedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+
+    return formatedDate;
+  }
 }
