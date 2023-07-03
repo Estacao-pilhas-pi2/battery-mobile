@@ -122,7 +122,7 @@ class _RecyclerPageState extends State<RecyclerPage> {
                       onPressed: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(builder: (context) {
-                          return const PaymentHistory();
+                          return const PaymentHistoryPage();
                         }));
                       },
                       child: const Text(

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import '../../models/payment_report.dart';
 import 'components/payment_card.dart';
 
-class PaymentHistory extends StatefulWidget {
-  const PaymentHistory({super.key});
+class PaymentHistoryPage extends StatefulWidget {
+  const PaymentHistoryPage({super.key});
 
   @override
-  State<PaymentHistory> createState() => _PaymentHistoryState();
+  State<PaymentHistoryPage> createState() => _PaymentHistoryPageState();
 }
 
-class _PaymentHistoryState extends State<PaymentHistory> {
-  bool isScreenLoading = false;
+class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
+  bool isScreenLoading = true;
   List<PaymentReport> paymentReportList = [];
 
   @override
@@ -36,29 +36,28 @@ class _PaymentHistoryState extends State<PaymentHistory> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Histórico"),
-        ),
-        body: isScreenLoading
-            ? const Center(child: CircularProgressIndicator())
-            : paymentReportList.isEmpty
-                ? const Center(
-                    child: Text("Nenhum pagamento encontrado"),
-                  )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: paymentReportList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 20),
-                        child: PaymentCard(
-                          paymentReport: paymentReportList[index],
-                        ),
-                      );
-                    },
-                  ),
-      ),
+          appBar: AppBar(
+            title: const Text("Histórico"),
+          ),
+          body: isScreenLoading
+              ? const Center(child: CircularProgressIndicator())
+              : paymentReportList.isNotEmpty
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: paymentReportList.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20),
+                          child: PaymentCard(
+                            paymentReport: paymentReportList[index],
+                          ),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: Text("Nenhum pagamento encontrado"),
+                    )),
     );
   }
 }
