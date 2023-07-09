@@ -5,7 +5,8 @@ import '../../models/payment_report.dart';
 import 'components/payment_card.dart';
 
 class PaymentHistoryPage extends StatefulWidget {
-  const PaymentHistoryPage({super.key});
+  final int? maquinaId;
+  const PaymentHistoryPage({super.key, this.maquinaId});
 
   @override
   State<PaymentHistoryPage> createState() => _PaymentHistoryPageState();
@@ -24,7 +25,7 @@ class _PaymentHistoryPageState extends State<PaymentHistoryPage> {
 
   Future<void> initialRequest() async {
     List<PaymentReport> requestedPaymentReportList =
-        await PaymentHistoryController().getPaymentHistory();
+        await PaymentHistoryController().getPaymentHistory(widget.maquinaId);
 
     setState(() {
       paymentReportList = requestedPaymentReportList;

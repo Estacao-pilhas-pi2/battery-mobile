@@ -1,10 +1,10 @@
 import 'package:estacao_pilhas/models/payment.dart';
-import 'package:estacao_pilhas/services/maquina_service.dart';
+import 'package:estacao_pilhas/services/payment_service.dart';
 
 class CreditsReceivedController {
   Future makePayment(String paymentId) async {
     try {
-      Payment requestedPayment = await MaquinaService().makePayment(paymentId);
+      Payment requestedPayment = await PaymentService().makePayment(paymentId);
 
       return requestedPayment;
     } catch (error) {

@@ -76,4 +76,17 @@ class PaymentReport {
         (var item) => {paymentReportList.add(PaymentReport.fromJson(item))});
     return paymentReportList;
   }
+
+  static List<PaymentReport> fromMaquinaJsonList(jsonDecode) {
+    List<PaymentReport> paymentReportList = [];
+    List<dynamic> json = [];
+
+    if (jsonDecode["pagamentos"] != null) json = jsonDecode["pagamentos"];
+
+    for (var item in json) {
+      paymentReportList.add(PaymentReport.fromJson(item));
+    }
+
+    return paymentReportList;
+  }
 }
