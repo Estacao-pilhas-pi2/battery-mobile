@@ -15,6 +15,7 @@ class UsuarioService {
   static String registerEstabelecimento = "/api/estabelecimento/";
   static String recicladorEndpoint = "/api/reciclador/";
   static String registerNotificationEndpoint = "/api/estabelecimento/celular/";
+  static String paymentReportsEndpoint = "/api/pagamento";
 
   Future<Usuario> login(String email, String password) async {
     final url = Uri.parse(Utils.url + loginEndpoint);

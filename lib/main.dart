@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Estação Pilhas',
         theme: AppColors.appTheme,
+        debugShowCheckedModeBanner: false,
         home: const Login());
   }
 }

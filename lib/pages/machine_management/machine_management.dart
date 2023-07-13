@@ -5,6 +5,7 @@ import 'package:estacao_pilhas/models/maquina.dart';
 import 'package:estacao_pilhas/pages/machine_form/location_form.dart';
 import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
 import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
+import 'package:estacao_pilhas/pages/payment_history/payment_history.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -172,7 +173,20 @@ class _MachineManagementState extends State<MachineManagement> {
               onPressed: emptyMachine,
             ),
             const SizedBox(
-              height: 50,
+              height: 25,
+            ),
+            RoundedButton(
+              text: "Ver Histórico",
+              backgroundColor: StaticColors.onPrimary,
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return PaymentHistoryPage(maquinaId: widget.machine.id);
+                }));
+              },
+            ),
+            const SizedBox(
+              height: 25,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -189,7 +203,7 @@ class _MachineManagementState extends State<MachineManagement> {
             ),
             showNotificationSlider(),
             const SizedBox(
-              height: 50,
+              height: 25,
             ),
             RoundedButton(
                 text: "Excluir",
