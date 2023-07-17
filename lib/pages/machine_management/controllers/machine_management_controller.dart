@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:estacao_pilhas/services/usuario_service.dart';
@@ -17,12 +18,24 @@ class MachineManagementController {
     }
   }
 
+  Future getMaquinaInfo(int id) async {
+    try {
+      Maquina response = await MaquinaService().getMaquinaInfo(id);
+      return response;
+    } catch (error) {
+      // return error.toString();
+      return false;
+    }
+  }
+
   Future emptyMachine(Map id) async {
     try {
       await MaquinaService().emptyMaquina(id);
       return true;
     } catch (error) {
-      return error.toString();
+      // return error.toString();
+      log(error.toString());
+      return false;
     }
   }
 

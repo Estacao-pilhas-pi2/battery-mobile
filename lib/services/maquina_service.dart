@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:estacao_pilhas/models/usuario.dart';
@@ -14,6 +15,32 @@ class MaquinaService {
   static String listMaquinaEndpoint = "/api/maquina/";
   static String createMaquinaEndpoint = "/api/maquina/{id}/";
   static String emptyMaquinaEndpoint = "/api/maquina/esvaziar/";
+
+  Future<Maquina> getMaquinaInfo(int id) async {
+    final url = Uri.parse(
+        Utils.url + createMaquinaEndpoint.replaceFirst("{id}", id.toString()));
+
+    Usuario user = await UsuarioService().getUserInfo();
+
+    try {
+      final response = await http.get(url, headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.access}'
+      }).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        return Maquina.fromJson(jsonDecode(response.body));
+      } else {
+        throw const HttpException('Dados incorretos.');
+      }
+    } catch (error) {
+      if (error is TimeoutException) {
+        throw const HttpException('Ocorreu um erro ao carregar as informações');
+      } else {
+        throw HttpException('$error');
+      }
+    }
+  }
 
   Future<List<Maquina>> getMaquinaList() async {
     final url = Uri.parse(Utils.url + listMaquinaEndpoint);
@@ -78,8 +105,8 @@ class MaquinaService {
         'Authorization': 'Bearer ${user.access}'
       }).timeout(const Duration(seconds: 10));
 
-      if (response.statusCode == 200) {
-        return response.body; //alterar
+      if (response.statusCode == 201) {
+        return true; //alterar
       } else {
         throw const HttpException('Ocorreu um erro.');
       }

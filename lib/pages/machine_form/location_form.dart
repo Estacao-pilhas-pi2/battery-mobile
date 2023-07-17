@@ -2,7 +2,9 @@ import 'package:estacao_pilhas/components/base_form.dart';
 import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/models/usuario.dart';
 import 'package:estacao_pilhas/pages/machine_form/values_form.dart';
+import 'package:estacao_pilhas/services/usuario_service.dart';
 import 'package:estacao_pilhas/utils/geolocator.dart';
 import 'package:estacao_pilhas/utils/input_masks.dart';
 import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
@@ -33,6 +35,7 @@ class _LocationFormState extends State<LocationForm> {
   Position? _localizacao;
   bool locationAltered = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Usuario user = Usuario();
 
   @override
   void initState() {
@@ -50,6 +53,7 @@ class _LocationFormState extends State<LocationForm> {
       _complemento = widget.maquina?.endereco?.complemento;
       _rua = widget.maquina?.endereco?.rua;
     }
+    user = await UsuarioService().getUserInfo();
   }
 
   @override
@@ -106,6 +110,7 @@ class _LocationFormState extends State<LocationForm> {
                 const SizedBox(height: 25),
                 CustomTextField(
                   initialValue: widget.maquina?.endereco?.complemento ?? "",
+                  notEmpty: true,
                   label: "Complemento",
                   onSave: (String? value) {
                     _complemento = value;
@@ -177,7 +182,7 @@ class _LocationFormState extends State<LocationForm> {
           builder: (BuildContext qrCodeContext) {
             return ValuesForm(
                 machineId: widget.machineId,
-                userId: widget.userId,
+                userId: int.parse(user.identificador!),
                 bairro: _bairro,
                 cep: Masks().clearMask(_cep),
                 cidade: _cidade,

@@ -113,7 +113,7 @@ class _EstablishmentPageState extends State<EstablishmentPage> {
           onRead: (capture, qrCodeContext) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               return LocationForm(
-                  machineId: capture['id'], userId: widget.userId);
+                  machineId: capture['id_maquina'], userId: widget.userId);
             }));
             return true;
           });
