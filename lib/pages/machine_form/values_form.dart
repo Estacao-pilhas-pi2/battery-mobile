@@ -3,6 +3,7 @@ import 'package:estacao_pilhas/components/rounded_button.dart';
 import 'package:estacao_pilhas/components/text_field.dart';
 import 'package:estacao_pilhas/models/endereco.dart';
 import 'package:estacao_pilhas/models/maquina.dart';
+import 'package:estacao_pilhas/models/usuario.dart';
 import 'package:estacao_pilhas/pages/machine_form/controllers/machine_form_controller.dart';
 import 'package:estacao_pilhas/pages/machine_management/controllers/machine_management_controller.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +48,12 @@ class _ValuesFormState extends State<ValuesForm> {
   int? _C;
   int? _D;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Usuario user = Usuario();
 
   @override
   void initState() {
     super.initState();
+    initialData();
   }
 
   void initialData() {

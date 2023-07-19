@@ -54,7 +54,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     setState(() => isLoading = false);
 
-    if (mounted && response is bool) {
+    if (mounted && response == true) {
       await showDialog<void>(
         context: context,
         barrierDismissible: true,

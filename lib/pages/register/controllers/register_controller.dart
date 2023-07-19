@@ -9,10 +9,10 @@ class RegisterController {
       await UsuarioService()
           .register(email, nome, senha, identification, userType);
 
-      if (userType == "Estabelecimento") {
-        final registrationId = await FirebaseMessaging.instance.getToken();
-        await UsuarioService().registerNotification(registrationId!, "android");
-      }
+      // if (userType == "Estabelecimento") {
+      //   final registrationId = await FirebaseMessaging.instance.getToken();
+      //   await UsuarioService().registerNotification(registrationId!, "android");
+      // }
       return true;
     } catch (error) {
       return error.toString();

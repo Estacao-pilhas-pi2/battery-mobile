@@ -239,8 +239,8 @@ class _MachineManagementState extends State<MachineManagement> {
                   RoundedButton(
                       text: "Excluir",
                       backgroundColor: StaticColors.onPrimary,
-                      onPressed: () {
-                        deleteMachine();
+                      onPressed: () async {
+                        await deleteMachine();
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => EstablishmentPage(
@@ -254,7 +254,7 @@ class _MachineManagementState extends State<MachineManagement> {
     );
   }
 
-  void deleteMachine() async {
+  Future<void> deleteMachine() async {
     Map<String, void> delete = {"estabelecimento": null};
     await MachineManagementController().editMachine(widget.machine.id!, delete);
   }

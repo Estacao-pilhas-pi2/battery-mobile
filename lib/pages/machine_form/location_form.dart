@@ -11,6 +11,8 @@ import 'package:estacao_pilhas/pages/machine_management/controllers/machine_mana
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../../components/simple_dialog.dart';
+
 class LocationForm extends StatefulWidget {
   final int machineId;
   final int userId;
@@ -158,6 +160,17 @@ class _LocationFormState extends State<LocationForm> {
           onPressed: () async {
             locationAltered = true;
             _localizacao = await getUserPosition();
+            if (_localizacao != null) {
+              showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return BasicDialog(
+                      title: 'Posição atualizada',
+                      message: "Localização da máquina foi atualizada");
+                },
+              );
+            }
           },
         ),
       );
